@@ -1,4 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: whitesmoke;}
+
+small,.small {
+	font-weight: lighter;
+	font-size: 12px;
+}
+
+.p-1 {
+	padding: 5px;
+}
+
+.mt-1 {
+	margin-top: 5px;
+}
+
+.text-grey {
+	color: grey;
+}
+
+.font-weight-lighter {
+	font-weight: lighter;
+}
+
+.font-size-medium {
+	font-size: 14px;
+}
