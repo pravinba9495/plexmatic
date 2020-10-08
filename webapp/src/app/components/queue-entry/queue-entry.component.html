@@ -1,17 +1,14 @@
-<mat-card>
+<mat-card class="mat-elevation-z4">
 	<mat-card-content>
 		<div style="display: flex; flex: 1 auto;">
 			<div class="p-1">
-				<mat-checkbox color="primary"></mat-checkbox>
-			</div>
-			<div class="p-1">
-				<span class="font-size-medium text-grey">{{filename}}</span>
+				<mat-checkbox color="primary">{{filename}}</mat-checkbox>
 			</div>
 		</div>
 		<div>
 
 		</div>
-		<div class="p-1 mt-1">
+		<div class="p-1 mt-2">
 			<mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
 		</div>
 	</mat-card-content>
