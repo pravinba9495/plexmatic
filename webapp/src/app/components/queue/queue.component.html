@@ -1,0 +1,9 @@
+<div class="p-1">
+	<div class="mt-1 p-1">
+		<span *ngIf="items.length">{{items.length}} remaining item(s) in the queue</span>
+		<span *ngIf="!items.length">No items in the queue</span>
+	</div>
+	<ng-container *ngFor="let item of items">
+		<app-queue-entry [progress]="item.progress" [filename]="item.filename"></app-queue-entry>
+	</ng-container>
+</div>

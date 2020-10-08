@@ -1,0 +1,18 @@
+<mat-card>
+	<mat-card-content>
+		<div style="display: flex; flex: 1 auto;">
+			<div class="p-1">
+				<mat-checkbox color="primary"></mat-checkbox>
+			</div>
+			<div class="p-1">
+				<span class="font-size-medium text-grey">{{filename}}</span>
+			</div>
+		</div>
+		<div>
+
+		</div>
+		<div class="p-1 mt-1">
+			<mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+		</div>
+	</mat-card-content>
+</mat-card>
