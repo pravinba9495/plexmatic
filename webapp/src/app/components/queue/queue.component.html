@@ -4,6 +4,6 @@
 		<span *ngIf="!queueService.items.length">No items in the queue</span>
 	</div>
 	<div class="m-2" *ngFor="let item of queueService.items">
-		<app-queue-entry [progress]="item.progress" [filename]="item.filename"></app-queue-entry>
+		<app-queue-entry [item]="item"></app-queue-entry>
 	</div>
 </div>

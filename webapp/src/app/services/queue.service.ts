@@ -7,11 +7,15 @@ import { environment } from 'src/environments/environment';
 })
 export class QueueService {
 
-  public items: QueueItem[] = [];
+  private _items: QueueItem[] = [];
 
   constructor() { 
     if (!environment.production) {
-      this.items = SampleQueueItems;
+      this._items = SampleQueueItems;
     }
+  }
+
+  get items(): QueueItem[] {
+    return this._items;
   }
 }

@@ -1,15 +1,29 @@
 <mat-card class="mat-elevation-z4">
 	<mat-card-content>
-		<div style="display: flex; flex: 1 auto;">
-			<div class="p-1">
-				<mat-checkbox color="primary">{{filename}}</mat-checkbox>
+		<div
+			style="display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center;">
+			<div>
+				<mat-checkbox [disabled]="item.started" color="primary">{{item.filename}}</mat-checkbox>
+			</div>
+			<div>
+				<button *ngIf="item.started" mat-icon-button matTooltipPosition="left" [matTooltip]="'Stop'">
+					<mat-icon style="font-size: 25px;" inline="true">stop_circle</mat-icon>
+				</button>
+				<button *ngIf="!item.started" mat-icon-button matTooltipPosition="left"
+					[matTooltip]="'Remove from queue'">
+					<mat-icon style="font-size: 25px;" inline="true">delete</mat-icon>
+				</button>
 			</div>
 		</div>
 		<div>
-
+			<div class="p-1">
+				<mat-chip-list>
+				</mat-chip-list>
+			</div>
 		</div>
-		<div class="p-1 mt-2">
-			<mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+		<div class="mt-2">
+			<mat-progress-bar mode="determinate" [value]="item.progress" matTooltipPosition="above"
+				[matTooltip]="item.progress + '%'"></mat-progress-bar>
 		</div>
 	</mat-card-content>
 </mat-card>
