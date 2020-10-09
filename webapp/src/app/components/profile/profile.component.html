@@ -97,7 +97,7 @@
 				<mat-form-field>
 					<mat-label>Languages to keep</mat-label>
 					<mat-select multiple [(ngModel)]="profile.languages">
-						<mat-option value="eng">English</mat-option>
+						<mat-option *ngFor="let code of codes" [value]="code.value">{{code.label}}</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
@@ -105,7 +105,7 @@
 				<mat-form-field>
 					<mat-label>Primary language</mat-label>
 					<mat-select [(ngModel)]="profile.primaryLang">
-						<mat-option value="eng">English</mat-option>
+						<mat-option *ngFor="let code of codes" [value]="code.value">{{code.label}}</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>

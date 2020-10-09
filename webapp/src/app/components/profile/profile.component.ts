@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Profile } from 'src/app/models/profile';
 import { codecs } from 'src/constants/codecs';
+import { codes } from 'src/constants/codes';
 
 @Component({
   selector: 'app-profile',
@@ -14,6 +15,7 @@ export class ProfileComponent implements OnInit {
   public mode = 'add';
   public profile = new Profile();
   public codecs = codecs;
+  public codes = codes;
 
   constructor(
     public dialog: MatDialogRef<ProfileComponent>,
