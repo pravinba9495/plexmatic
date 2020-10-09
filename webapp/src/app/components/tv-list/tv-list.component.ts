@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TvService } from 'src/app/services/tv.service';
 
 @Component({
   selector: 'app-tv-list',
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TvListComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public tvService: TvService,
+  ) { }
 
   ngOnInit(): void {
   }
