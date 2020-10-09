@@ -1,0 +1,116 @@
+<div mat-dialog>
+	<div mat-dialog-title>
+		{{mode === 'add' ? 'Add' : 'Modify'}} Profile
+	</div>
+	<div mat-dialog-content>
+		<div class="p-1">
+			<mat-form-field>
+				<mat-label>Name</mat-label>
+				<input type="text" matInput>
+			</mat-form-field>
+		</div>
+		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Container</mat-label>
+					<mat-select [(ngModel)]="profile.container">
+						<mat-option value="mkv">MKV</mat-option>
+						<mat-option value="mp4">MP4</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Video Codec</mat-label>
+					<mat-select [(ngModel)]="profile.vcodec">
+						<mat-option value="h.264">H.264</mat-option>
+						<mat-option value="h.265">H.265</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Transcoder Quality</mat-label>
+					<mat-select [(ngModel)]="profile.vquality">
+						<mat-option value="ultrafast">Ultra Fast (Lowest Quality)</mat-option>
+						<mat-option value="superfast">Super Fast</mat-option>
+						<mat-option value="veryfast">Very Fast</mat-option>
+						<mat-option value="faster">Faster</mat-option>
+						<mat-option value="fast">Fast</mat-option>
+						<mat-option value="medium">Medium</mat-option>
+						<mat-option value="slow">Slow</mat-option>
+						<mat-option value="slower">Slower</mat-option>
+						<mat-option value="veryslow">Very Slow (Highest Quality)</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Audio Codecs (Passthru)</mat-label>
+					<mat-select multiple [(ngModel)]="profile.passthrough">
+						<mat-option value="truehd">Dolby TrueHD (Lossless)</mat-option>
+						<mat-option value="dtshd">DTS-HD MA (Lossless)</mat-option>
+						<mat-option value="flac">FLAC (Lossless)</mat-option>
+						<mat-option value="dts">DTS</mat-option>
+						<mat-option value="eac3">E-AC3</mat-option>
+						<mat-option value="ac3">AC3</mat-option>
+						<mat-option value="aac">AAC</mat-option>
+						<mat-option value="mp3">MP3</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Audio Codec (Fallback)</mat-label>
+					<mat-select [(ngModel)]="profile.acodec">
+						<mat-option value="aac">AAC</mat-option>
+						<mat-option value="ac3">AC3</mat-option>
+						<mat-option value="eac3">EAC3</mat-option>
+						<mat-option value="mp3">MP3</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Audio Bitrate (kbps)</mat-label>
+					<input type="number" matInput [(ngModel)]="profile.aquality">
+				</mat-form-field>
+			</div>
+		</div>
+		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Languages (Wanted, if present)</mat-label>
+					<mat-select multiple [(ngModel)]="profile.languages">
+						<mat-option value="eng">English</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Primary language</mat-label>
+					<mat-select [(ngModel)]="profile.primaryLang">
+						<mat-option value="eng">English</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class="p-1">
+			<mat-checkbox color="primary" [(ngModel)]="profile.subtitles">Keep subtitles</mat-checkbox>
+		</div>
+	</div>
+	<div mat-dialog-actions align="center">
+		<div class="p-1">
+			<button color="primary" mat-raised-button>
+				Save
+			</button>
+		</div>
+		<div class="p-1">
+			<button mat-raised-button mat-dialog-close>
+				Close
+			</button>
+		</div>
+	</div>
+</div>
