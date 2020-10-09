@@ -9,6 +9,10 @@
 				<input type="text" matInput>
 			</mat-form-field>
 		</div>
+		<div class="mt-1">
+			<mat-icon inline="true">movie</mat-icon>
+			<span class="ml-1">Video</span>
+		</div>
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 			<div class="p-1">
 				<mat-form-field>
@@ -45,30 +49,35 @@
 				</mat-form-field>
 			</div>
 		</div>
+		<div class="mt-1">
+			<mat-icon inline="true">audiotrack</mat-icon>
+			<span class="ml-1">Audio</span>
+		</div>
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Audio Codecs (Passthru)</mat-label>
 					<mat-select multiple [(ngModel)]="profile.passthrough">
-						<mat-option value="truehd">Dolby TrueHD (Lossless)</mat-option>
-						<mat-option value="dtshd">DTS-HD MA (Lossless)</mat-option>
-						<mat-option value="flac">FLAC (Lossless)</mat-option>
-						<mat-option value="dts">DTS</mat-option>
-						<mat-option value="eac3">E-AC3</mat-option>
-						<mat-option value="ac3">AC3</mat-option>
-						<mat-option value="aac">AAC</mat-option>
-						<mat-option value="mp3">MP3</mat-option>
+						<mat-option *ngFor="let codec of codecs" [value]="codec.value">{{codec.label}} {{codec.lossless ? '(Lossless)': ''}}</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Audio Codec (Fallback)</mat-label>
-					<mat-select [(ngModel)]="profile.acodec">
-						<mat-option value="aac">AAC</mat-option>
-						<mat-option value="ac3">AC3</mat-option>
-						<mat-option value="eac3">EAC3</mat-option>
-						<mat-option value="mp3">MP3</mat-option>
+					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.acodec">
+						<ng-container *ngFor="let codec of codecs">
+							<mat-option *ngIf="!codec.lossless && !codec.value.includes('dts')" [value]="codec.value">{{codec.label}}</mat-option>
+						</ng-container>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="p-1">
+				<mat-form-field>
+					<mat-label>Audio Mixdown (Fallback)</mat-label>
+					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.achannels">
+						<mat-option [value]="2">Stereo</mat-option>
+						<mat-option [value]="6">5.1 Channels</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
@@ -79,10 +88,14 @@
 				</mat-form-field>
 			</div>
 		</div>
+		<div class="mt-1">
+			<mat-icon inline="true">translate</mat-icon>
+			<span class="ml-1">Languages</span>
+		</div>
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 			<div class="p-1">
 				<mat-form-field>
-					<mat-label>Languages (Wanted, if present)</mat-label>
+					<mat-label>Languages to keep</mat-label>
 					<mat-select multiple [(ngModel)]="profile.languages">
 						<mat-option value="eng">English</mat-option>
 					</mat-select>
@@ -96,9 +109,6 @@
 					</mat-select>
 				</mat-form-field>
 			</div>
-		</div>
-		<div class="p-1">
-			<mat-checkbox color="primary" [(ngModel)]="profile.subtitles">Keep subtitles</mat-checkbox>
 		</div>
 	</div>
 	<div mat-dialog-actions align="center">
