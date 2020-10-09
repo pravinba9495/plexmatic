@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { QueueItem } from 'src/app/models/queue-item';
 
 @Component({
   selector: 'app-queue-entry',
@@ -9,10 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class QueueEntryComponent implements OnInit {
 
   @Input()
-  filename: string;
-
-  @Input()
-  progress: number;
+  item: QueueItem; 
 
   constructor() { }
 

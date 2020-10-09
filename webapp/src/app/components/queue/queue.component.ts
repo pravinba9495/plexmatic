@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { QueueService } from 'src/app/services/queue.service';
 
 @Component({
   selector: 'app-queue',
@@ -8,14 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QueueComponent implements OnInit {
 
-  items = [
-    {
-      filename: 'Sample.mkv',
-      progress: 45,
-    },
-  ];
-
-  constructor() { }
+  constructor(
+    public queueService: QueueService,
+  ) { }
 
   ngOnInit(): void {
   }

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: whitesmoke;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #ececec;}
 
 small,.small {
 	font-weight: lighter;
@@ -12,8 +12,24 @@ small,.small {
 	padding: 5px;
 }
 
+.p-2 {
+	padding: 10px;
+}
+
+.m-1 {
+	margin: 5px;
+}
+
+.m-2 {
+	margin: 10px;
+}
+
 .mt-1 {
 	margin-top: 5px;
+}
+
+.mt-2 {
+	margin-top: 10px;
 }
 
 .text-grey {
