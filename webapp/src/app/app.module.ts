@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +16,8 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { TvListComponent } from './components/tv-list/tv-list.component';
 import { MaterialModule } from './modules/material/material.module';
 import { HomeComponent } from './pages/home/home.component';
+import { MovieEntryComponent } from './components/movie-entry/movie-entry.component';
+import { TvEntryComponent } from './components/tv-entry/tv-entry.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { HomeComponent } from './pages/home/home.component';
     TvListComponent,
     QueueEntryComponent,
     ProfileComponent,
+    MovieEntryComponent,
+    TvEntryComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +41,7 @@ import { HomeComponent } from './pages/home/home.component';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

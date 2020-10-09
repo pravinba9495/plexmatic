@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { QueueItem } from 'src/app/models/queue-item';
-import { SampleQueueItems } from 'src/app/services/queue.service.data';
+import { SampleQueueItems } from 'src/app/services/queue.data';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
