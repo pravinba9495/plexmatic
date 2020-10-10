@@ -20,6 +20,10 @@ export class ProfilesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  public refreshList() {
+    this.profileService.getProfiles();
+  }
+
   public openProfileModal(profile: Profile = null) {
     const dialog = this.dialog.open(ProfileComponent, {
       data: JSON.parse(JSON.stringify(profile))
