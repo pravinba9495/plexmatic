@@ -1,16 +1,32 @@
 import { codecs } from 'src/constants/codecs';
 
 export class Profile {
+	public id?: number = 0;
 	public name: string;
 	public container: string = 'mkv';
-	public vcodec: string = 'h.264';
-	public vquality: string = 'medium';
-	public passthrough: string[] = codecs.filter(codec => codec.lossless).map(codec => codec.value);
-	public acodec: string = 'aac';
-	public achannels: number = 2;
-	public aquality: number = 0;
-	public languages: string[] = [
-		'eng'
-	];
-	public primaryLang: string = 'eng';
+	public video: {
+		codec: string;
+		quality: string;
+	} = {
+		codec: 'h264',
+		quality: 'medium'
+	};
+	public audio: {
+		codec: string;
+		channels: number;
+		quality: number;
+		passthrough: string[];
+	} = {
+		codec: 'aac',
+		channels: 2,
+		quality: 0,
+		passthrough: codecs.filter(codec => codec.lossless).map(codec => codec.value)
+	}
+	public language: {
+		wanted: string[];
+		primary: string;
+	} = {
+		wanted: ['eng'],
+		primary: 'eng'
+	};
 }
