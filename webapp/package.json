@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 127.0.0.1 --port 4200 -o",
-    "build": "ng build",
+    "build": "ng build --prod",
     "lint": "ng lint"
   },
   "private": true,
