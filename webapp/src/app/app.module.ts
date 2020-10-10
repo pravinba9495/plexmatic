@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -6,12 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HistoryComponent } from './components/history/history.component';
+import { MovieEntryComponent } from './components/movie-entry/movie-entry.component';
 import { MoviesListComponent } from './components/movies-list/movies-list.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ProfilesComponent } from './components/profiles/profiles.component';
 import { QueueEntryComponent } from './components/queue-entry/queue-entry.component';
 import { QueueComponent } from './components/queue/queue.component';
-import { TabsComponent } from './components/tabs/tabs.component';
+import { TvEntryComponent } from './components/tv-entry/tv-entry.component';
 import { TvListComponent } from './components/tv-list/tv-list.component';
 import { MaterialModule } from './modules/material/material.module';
 import { HomeComponent } from './pages/home/home.component';
@@ -21,7 +23,6 @@ import { HomeComponent } from './pages/home/home.component';
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    TabsComponent,
     QueueComponent,
     HistoryComponent,
     ProfilesComponent,
@@ -29,6 +30,8 @@ import { HomeComponent } from './pages/home/home.component';
     TvListComponent,
     QueueEntryComponent,
     ProfileComponent,
+    MovieEntryComponent,
+    TvEntryComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +39,7 @@ import { HomeComponent } from './pages/home/home.component';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
