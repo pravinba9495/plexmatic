@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { QueueItem } from 'src/app/models/queue-item';
+import { ProfileService } from 'src/app/services/profile.service';
 
 @Component({
   selector: 'app-queue-entry',
@@ -12,7 +13,9 @@ export class QueueEntryComponent implements OnInit {
   @Input()
   item: QueueItem; 
 
-  constructor() { }
+  constructor(
+    public profileService: ProfileService,
+  ) { }
 
   ngOnInit(): void {
   }

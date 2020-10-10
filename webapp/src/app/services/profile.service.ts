@@ -26,6 +26,10 @@ export class ProfileService {
     });
   }
 
+  getProfilebyID(id: number) {
+    return this.items.find(p => p.id === id);
+  }
+
   saveProfile(profile: Profile) {
     return this.http.post(environment.apiURL + '/profiles', profile).toPromise();
   }
