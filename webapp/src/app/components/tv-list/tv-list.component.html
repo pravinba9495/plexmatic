@@ -1,5 +1,12 @@
 <div class="p-2">
-	<div class="mt-1 p-1">
+	<div class="m-2" align="center">
+		<button color="warn" [disabled]="tvService.progress" mat-raised-button (click)="refreshList()">
+			<mat-icon>repeat</mat-icon>
+			&nbsp;
+			REFRESH
+		</button>
+	</div>
+	<div class="m-2 p-1" align="center">
 		<span *ngIf="tvService.items.length">{{tvService.items.length}} TV shows found</span>
 		<span *ngIf="!tvService.items.length">No TV shows found</span>
 	</div>
