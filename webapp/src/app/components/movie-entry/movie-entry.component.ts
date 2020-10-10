@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { QueueService } from 'src/app/services/queue.service';
 
 @Component({
   selector: 'app-movie-entry',
@@ -11,7 +12,9 @@ export class MovieEntryComponent implements OnInit {
   @Input()
   item: any;
 
-  constructor() { }
+  constructor(
+    public queueService: QueueService,
+  ) { }
 
   ngOnInit(): void {
   }

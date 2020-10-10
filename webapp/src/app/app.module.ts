@@ -17,6 +17,7 @@ import { TvEntryComponent } from './components/tv-entry/tv-entry.component';
 import { TvListComponent } from './components/tv-list/tv-list.component';
 import { MaterialModule } from './modules/material/material.module';
 import { HomeComponent } from './pages/home/home.component';
+import { JobComponent } from './components/job/job.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { HomeComponent } from './pages/home/home.component';
     ProfileComponent,
     MovieEntryComponent,
     TvEntryComponent,
+    JobComponent,
   ],
   imports: [
     BrowserModule,
