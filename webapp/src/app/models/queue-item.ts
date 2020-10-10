@@ -1,5 +1,6 @@
 export class QueueItem {
 	public filename: string;
-	public progress: number;
-	public started: boolean;
+	public profileId: number;
+	public started?: boolean;
+	public finished?: boolean;
 }

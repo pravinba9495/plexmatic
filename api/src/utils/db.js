@@ -26,7 +26,7 @@ const init = () => {
 	db.run(
 		`
 		CREATE TABLE IF NOT EXISTS movies
-		 (id INTEGER PRIMARY KEY AUTOINCREMENT, file text, path text, children text)
+		 (id INTEGER PRIMARY KEY AUTOINCREMENT, file text, type text, path text, children text)
 		`,
 		(error) => {
 			if (error) {
@@ -38,7 +38,7 @@ const init = () => {
 	db.run(
 		`
 		CREATE TABLE IF NOT EXISTS tv
-		(id INTEGER PRIMARY KEY AUTOINCREMENT, file text, path text, children text)
+		(id INTEGER PRIMARY KEY AUTOINCREMENT, file text, type text, path text, children text)
 		`,
 		(error) => {
 			if (error) {
@@ -99,7 +99,7 @@ const getProfilesFromDb = () => {
 				if (error) {
 					reject(error);
 				}
-				resolve(profileMapper(rows));
+				resolve(profileMapper(rows || []));
 			}
 		)
 	});
@@ -171,11 +171,12 @@ const saveMovieInDb = (movie) => {
 	return new Promise((resolve, reject) => {
 		db.run(
 			`INSERT INTO movies
-			(file, path, children)
-			VALUES (?,?,?)
+			(file, type, path, children)
+			VALUES (?,?,?, ?)
 			`,
 			[
 				movie.file,
+				movie.type,
 				movie.path,
 				JSON.stringify(movie.children)
 			],
@@ -193,11 +194,12 @@ const saveTvShowInDb = (tv) => {
 	return new Promise((resolve, reject) => {
 		db.run(
 			`INSERT INTO tv
-			(file, path, children)
-			VALUES (?,?,?)
+			(file, type, path, children)
+			VALUES (?,?,?,?)
 			`,
 			[
 				tv.file,
+				tv.type,
 				tv.path,
 				JSON.stringify(tv.children)
 			],
@@ -245,13 +247,13 @@ const getMoviesListFromDb = () => {
 	return new Promise((resolve, reject) => {
 		db.all(
 			`
-			SELECT id, file, path, children from movies
+			SELECT id, file, type, path, children from movies
 			`,
 			(error, rows) => {
 				if (error) {
 					reject(error);
 				}
-				resolve(mediaMapper(rows));
+				resolve(mediaMapper(rows || []));
 			}
 		)
 	});
@@ -261,13 +263,13 @@ const getTvShowsListFromDb = () => {
 	return new Promise((resolve, reject) => {
 		db.all(
 			`
-			SELECT id, file, path, children from tv
+			SELECT id, file, type, path, children from tv
 			`,
 			(error, rows) => {
 				if (error) {
 					reject(error);
 				}
-				resolve(mediaMapper(rows));
+				resolve(mediaMapper(rows || []));
 			}
 		)
 	});

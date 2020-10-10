@@ -7,12 +7,14 @@ const walk = async (dir) => {
 		const filePath = path.join(dir, file);
 		const stats = await fs.stat(filePath);
 		if (stats.isDirectory()) return {
+			type: 'directory',
 			file,
 			path: filePath,
 			children: await walk(filePath)
 		};
 		else if (stats.isFile()) {
 			return {
+				type: 'file',
 				file,
 				path: filePath,
 				children: []

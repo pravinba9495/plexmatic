@@ -1,7 +1,12 @@
 <div class="p-2">
-	<div class="mt-1 p-1">
-		<span *ngIf="queueService.items.length">{{queueService.items.length}} remaining item(s) in the queue</span>
-		<span *ngIf="!queueService.items.length">No items in the queue</span>
+	<div class="mt-1 p-2" style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+		<div>
+			<span *ngIf="queueService.items.length">{{queueService.items.length}} remaining item(s) in the queue</span>
+			<span *ngIf="!queueService.items.length">No items in the queue</span>
+		</div>
+		<div>
+			<button *ngIf="queueService.items.length > 0 && canShowStartButton" mat-raised-button color="primary" (click)="queueService.start()">START</button>
+		</div>
 	</div>
 	<div class="m-2" *ngFor="let item of queueService.items">
 		<app-queue-entry [item]="item"></app-queue-entry>
