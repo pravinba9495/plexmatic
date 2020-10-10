@@ -7,17 +7,22 @@
 				ADD
 			</button>
 		</div>
+		<div class="p-2">
+			<button color="warn" mat-raised-button (click)="refreshList()">
+				<mat-icon>repeat</mat-icon>
+				&nbsp;
+				REFRESH
+			</button>
+		</div>
 	</div>
 </div>
 
 <div class="p-2">
 	<div class="m-1 p-1" *ngFor="let item of profileService.items">
 		<mat-card style="cursor: pointer;" (click)="openProfileModal(item)">
-			<mat-card-header>
-				<mat-card-title>
-					<h4>{{item.name}}</h4>
-				</mat-card-title>
-			</mat-card-header>
+			<mat-card-title>
+				<h4><mat-icon inline="true">extension</mat-icon>&nbsp;{{item.name}}</h4>
+			</mat-card-title>
 			<mat-card-content>
 				<mat-chip-list>
 					<mat-chip style="text-transform: uppercase;">{{item.container}}</mat-chip>

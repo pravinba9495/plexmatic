@@ -1,5 +1,6 @@
 const { response } = require('express');
 const sqlite3 = require('sqlite3');
+let { walk, Q } = require('./walk');
 
 const db = new sqlite3.Database('./src/database/sqlite.db', (error) => {
 	if (error) {
@@ -22,7 +23,71 @@ const init = () => {
 			console.log('Profiles table created');
 		}
 	);
+	db.run(
+		`
+		CREATE TABLE IF NOT EXISTS movies
+		 (id INTEGER PRIMARY KEY AUTOINCREMENT, file text, path text, children text)
+		`,
+		(error) => {
+			if (error) {
+				console.error(error);
+			}
+			console.log('Movies table created');
+		}
+	);
+	db.run(
+		`
+		CREATE TABLE IF NOT EXISTS tv
+		(id INTEGER PRIMARY KEY AUTOINCREMENT, file text, path text, children text)
+		`,
+		(error) => {
+			if (error) {
+				console.error(error);
+			}
+			console.log('TV shows table created');
+		}
+	);
 }
+
+const truncateTable = (table) => {
+	return new Promise((resolve, reject) => {
+		db.run(
+			`
+			DELETE FROM ${table}
+			`,
+			(error) => {
+				if (error) {
+					console.error(error);
+					reject(error);
+				}
+				resolve();
+			}
+		);
+	})
+};
+
+const refreshList = (list) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			await truncateTable(list);
+			const data = await refreshData(list);
+			resolve(data);
+		} catch (error) {
+			reject(error);
+		}
+	});
+}
+
+const refreshData = (list) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const data = await walk('/' + list);
+			resolve(data);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
 
 const getProfilesFromDb = () => {
 	return new Promise((resolve, reject) => {
@@ -64,6 +129,15 @@ const profileMapper = (rows) => {
 	})
 }
 
+const mediaMapper = (rows) => {
+	return rows.map((row) => {
+		return {
+			...row,
+			children: JSON.parse(row.children)
+		};
+	})
+}
+
 const saveProfileInDb = (profile) => {
 	return new Promise((resolve, reject) => {
 		db.run(
@@ -82,6 +156,50 @@ const saveProfileInDb = (profile) => {
 				profile.audio.passthrough.join(),
 				profile.language.wanted.join(),
 				profile.language.primary
+			],
+			(error) => {
+				if (error) {
+					reject(error);
+				}
+				resolve();
+			}
+		);
+	});
+};
+
+const saveMovieInDb = (movie) => {
+	return new Promise((resolve, reject) => {
+		db.run(
+			`INSERT INTO movies
+			(file, path, children)
+			VALUES (?,?,?)
+			`,
+			[
+				movie.file,
+				movie.path,
+				JSON.stringify(movie.children)
+			],
+			(error) => {
+				if (error) {
+					reject(error);
+				}
+				resolve();
+			}
+		);
+	});
+};
+
+const saveTvShowInDb = (tv) => {
+	return new Promise((resolve, reject) => {
+		db.run(
+			`INSERT INTO tv
+			(file, path, children)
+			VALUES (?,?,?)
+			`,
+			[
+				tv.file,
+				tv.path,
+				JSON.stringify(tv.children)
 			],
 			(error) => {
 				if (error) {
@@ -123,9 +241,47 @@ const updateProfileInDb = (profile, id) => {
 	});
 };
 
+const getMoviesListFromDb = () => {
+	return new Promise((resolve, reject) => {
+		db.all(
+			`
+			SELECT id, file, path, children from movies
+			`,
+			(error, rows) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(mediaMapper(rows));
+			}
+		)
+	});
+}
+
+const getTvShowsListFromDb = () => {
+	return new Promise((resolve, reject) => {
+		db.all(
+			`
+			SELECT id, file, path, children from tv
+			`,
+			(error, rows) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(mediaMapper(rows));
+			}
+		)
+	});
+}
+
 module.exports = {
 	db,
 	getProfilesFromDb,
 	saveProfileInDb,
 	updateProfileInDb,
+	getMoviesListFromDb,
+	getTvShowsListFromDb,
+	saveMovieInDb,
+	saveTvShowInDb,
+	refreshData,
+	refreshList,
 };

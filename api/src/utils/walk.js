@@ -11,16 +11,20 @@ const walk = async (dir) => {
 			path: filePath,
 			children: await walk(filePath)
 		};
-		else if (stats.isFile()) return {
-			file,
-			path: filePath,
-			children: []
-		};
+		else if (stats.isFile()) {
+			return {
+				file,
+				path: filePath,
+				children: []
+			};
+		}
 	}));
 
-	return files.reduce((all, folderContents) => all.concat(folderContents), []).sort();
+	return files.reduce((all, folderContents) => {
+		return all.concat(folderContents);
+	}, []);
 };
 
 module.exports = {
-	walk
+	walk,
 };
