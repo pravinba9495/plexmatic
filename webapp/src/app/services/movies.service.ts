@@ -12,13 +12,17 @@ export class MoviesService {
   constructor(
     private http: HttpClient,
   ) { 
-    this.http.get(environment.apiURL + '/movies').subscribe((response: any) => {
-      this._items = response.data;
-    });
+    this.getMovies();
   }
 
   get items(): any[] {
     return this._items;
+  }
+
+  getMovies() {
+    this.http.get(environment.apiURL + '/movies').subscribe((response: any) => {
+      this._items = response.data;
+    });
   }
   
 }

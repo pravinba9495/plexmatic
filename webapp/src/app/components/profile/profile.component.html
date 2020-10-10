@@ -6,7 +6,7 @@
 		<div class="p-1">
 			<mat-form-field>
 				<mat-label>Name</mat-label>
-				<input type="text" matInput>
+				<input type="text" [(ngModel)]="profile.name" matInput>
 			</mat-form-field>
 		</div>
 		<div class="mt-1">
@@ -26,16 +26,16 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Video Codec</mat-label>
-					<mat-select [(ngModel)]="profile.vcodec">
-						<mat-option value="h.264">H.264</mat-option>
-						<mat-option value="h.265">H.265</mat-option>
+					<mat-select [(ngModel)]="profile.video.codec">
+						<mat-option value="h264">H.264</mat-option>
+						<mat-option value="h265">H.265</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Transcoder Quality</mat-label>
-					<mat-select [(ngModel)]="profile.vquality">
+					<mat-select [(ngModel)]="profile.video.quality">
 						<mat-option value="ultrafast">Ultra Fast (Lowest Quality)</mat-option>
 						<mat-option value="superfast">Super Fast</mat-option>
 						<mat-option value="veryfast">Very Fast</mat-option>
@@ -57,7 +57,7 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Audio Codecs (Passthru)</mat-label>
-					<mat-select multiple [(ngModel)]="profile.passthrough">
+					<mat-select multiple [(ngModel)]="profile.audio.passthrough">
 						<mat-option *ngFor="let codec of codecs" [value]="codec.value">{{codec.label}} {{codec.lossless ? '(Lossless)': ''}}</mat-option>
 					</mat-select>
 				</mat-form-field>
@@ -65,7 +65,7 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Audio Codec (Fallback)</mat-label>
-					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.acodec">
+					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.audio.codec">
 						<ng-container *ngFor="let codec of codecs">
 							<mat-option *ngIf="!codec.lossless && !codec.value.includes('dts')" [value]="codec.value">{{codec.label}}</mat-option>
 						</ng-container>
@@ -75,7 +75,7 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Audio Mixdown (Fallback)</mat-label>
-					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.achannels">
+					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.audio.channels">
 						<mat-option [value]="2">Stereo</mat-option>
 						<mat-option [value]="6">5.1 Channels</mat-option>
 					</mat-select>
@@ -84,7 +84,7 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Audio Bitrate (kbps)</mat-label>
-					<input type="number" matInput [(ngModel)]="profile.aquality">
+					<input type="number" matInput [(ngModel)]="profile.audio.quality">
 				</mat-form-field>
 			</div>
 		</div>
@@ -96,7 +96,7 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Languages to keep</mat-label>
-					<mat-select multiple [(ngModel)]="profile.languages">
+					<mat-select multiple [(ngModel)]="profile.language.wanted">
 						<mat-option *ngFor="let code of codes" [value]="code.value">{{code.label}}</mat-option>
 					</mat-select>
 				</mat-form-field>
@@ -104,7 +104,7 @@
 			<div class="p-1">
 				<mat-form-field>
 					<mat-label>Primary language</mat-label>
-					<mat-select [(ngModel)]="profile.primaryLang">
+					<mat-select [(ngModel)]="profile.language.primary">
 						<mat-option *ngFor="let code of codes" [value]="code.value">{{code.label}}</mat-option>
 					</mat-select>
 				</mat-form-field>
@@ -113,7 +113,7 @@
 	</div>
 	<div mat-dialog-actions align="center">
 		<div class="p-1">
-			<button color="primary" mat-raised-button>
+			<button color="primary" (click)="save()" mat-raised-button>
 				Save
 			</button>
 		</div>

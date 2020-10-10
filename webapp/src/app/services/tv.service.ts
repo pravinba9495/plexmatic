@@ -12,13 +12,17 @@ export class TvService {
   constructor(
     private http: HttpClient,
   ) { 
-    this.http.get(environment.apiURL + '/tv').subscribe((response: any) => {
-      this._items = response.data;
-    });
+    this.getTvShows();
   }
 
   get items(): any[] {
     return this._items;
+  }
+
+  getTvShows() {
+    this.http.get(environment.apiURL + '/tv').subscribe((response: any) => {
+      this._items = response.data;
+    });
   }
   
 }
