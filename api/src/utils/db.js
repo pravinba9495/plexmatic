@@ -105,6 +105,26 @@ const getProfilesFromDb = () => {
 	});
 }
 
+const getProfilebyIdFromDb = (id) => {
+	return new Promise((resolve, reject) => {
+		db.all(
+			`
+			SELECT id, name, container, v_codec, v_quality, a_codec, a_quality, a_channels, a_passthrough, lang_wanted, lang_primary from profiles
+			WHERE id = ?
+			`,
+			[
+				id
+			],
+			(error, rows) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(profileMapper(rows || []));
+			}
+		)
+	});
+}
+
 const profileMapper = (rows) => {
 	return rows.map((row) => {
 		return {
@@ -281,6 +301,7 @@ module.exports = {
 	saveProfileInDb,
 	updateProfileInDb,
 	getMoviesListFromDb,
+	getProfilebyIdFromDb,
 	getTvShowsListFromDb,
 	saveMovieInDb,
 	saveTvShowInDb,

@@ -39,10 +39,10 @@ router.post('/', (request, response) => {
 
 const begin = (index = 0) => {
 	queue = queues[index];
-	setTimeout(() => {
+	setTimeout(async () => {
 		queue.started = true;
 		queue.finished = false;
-		mediaProcessor(queue);
+		await mediaProcessor(queue);
 		queue.finished = true;
 		console.log('finished');
 		if (queues[index + 1]) {
