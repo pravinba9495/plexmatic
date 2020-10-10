@@ -1,19 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { QueueService } from 'src/app/services/queue.service';
+import { Component, OnInit } from "@angular/core";
+import { QueueService } from "src/app/services/queue.service";
 
 @Component({
-  selector: 'app-queue',
-  templateUrl: './queue.component.html',
-  styles: [
-  ]
+  selector: "app-queue",
+  templateUrl: "./queue.component.html",
+  styles: [],
 })
 export class QueueComponent implements OnInit {
-
   timer;
 
-  constructor(
-    public queueService: QueueService,
-  ) { }
+  constructor(public queueService: QueueService) {}
 
   ngOnInit(): void {
     this.timer = setInterval(() => {
@@ -34,9 +30,6 @@ export class QueueComponent implements OnInit {
   ngOnDestroy() {
     try {
       clearInterval(this.timer);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   }
-
 }

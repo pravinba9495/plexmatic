@@ -1,22 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { QueueService } from 'src/app/services/queue.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { QueueService } from "src/app/services/queue.service";
 
 @Component({
-  selector: 'app-movie-entry',
-  templateUrl: './movie-entry.component.html',
-  styles: [
-  ]
+  selector: "app-movie-entry",
+  templateUrl: "./movie-entry.component.html",
+  styles: [],
 })
 export class MovieEntryComponent implements OnInit {
-
   @Input()
   item: any;
 
-  constructor(
-    public queueService: QueueService,
-  ) { }
+  constructor(public queueService: QueueService) {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

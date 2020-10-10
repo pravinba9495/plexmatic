@@ -1,38 +1,40 @@
 <div mat-dialog>
-	<div mat-dialog-title>
-		Add Job
-	</div>
-	<div mat-dialog-content>
-	
-		<div>
-			<mat-form-field style="width: 100%;">
-				<mat-label>Choose Profile</mat-label>
-				<mat-select [(ngModel)]="profileId">
-					<mat-option [value]="0">None</mat-option>
-					<mat-option *ngFor="let profile of profileService.items" [value]="profile.id">{{profile.name}}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
-		</div>
-	
-		<div class="m-1">
-			<mat-label>Files ({{queueService.queues.length}})</mat-label>
-			<ol>
-				<li *ngFor="let q of queueService.queues">{{q}}</li>
-			</ol>
-		</div>
-	
-	</div>
-	<div mat-dialog-actions align="center">
-		<div class="p-1">
-			<button color="primary" [disabled]="profileId === 0" (click)="start()" mat-raised-button>
-				Add
-			</button>
-		</div>
-		<div class="p-1">
-			<button mat-raised-button mat-dialog-close>
-				Close
-			</button>
-		</div>
-	</div>
+  <div mat-dialog-title>Add Job</div>
+  <div mat-dialog-content>
+    <div>
+      <mat-form-field style="width: 100%">
+        <mat-label>Choose Profile</mat-label>
+        <mat-select [(ngModel)]="profileId">
+          <mat-option [value]="0">None</mat-option>
+          <mat-option
+            *ngFor="let profile of profileService.items"
+            [value]="profile.id"
+            >{{ profile.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="m-1">
+      <mat-label>Files ({{ queueService.queues.length }})</mat-label>
+      <ol>
+        <li *ngFor="let q of queueService.queues">{{ q }}</li>
+      </ol>
+    </div>
+  </div>
+  <div mat-dialog-actions align="center">
+    <div class="p-1">
+      <button
+        color="primary"
+        [disabled]="profileId === 0"
+        (click)="start()"
+        mat-raised-button
+      >
+        Add
+      </button>
+    </div>
+    <div class="p-1">
+      <button mat-raised-button mat-dialog-close>Close</button>
+    </div>
+  </div>
 </div>

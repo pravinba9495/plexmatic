@@ -1,145 +1,222 @@
 <div mat-dialog>
-	<div mat-dialog-title>
-		{{mode === 'add' ? 'Add' : 'Modify'}} Profile
-	</div>
-	<div mat-dialog-content>
-		<div class="p-1">
-			<mat-form-field>
-				<mat-label>Name</mat-label>
-				<input type="text" [(ngModel)]="profile.name" matInput>
-			</mat-form-field>
-		</div>
-		<div class="mt-1">
-			<mat-icon inline="true">movie</mat-icon>
-			<span class="ml-1">Video</span>
-		</div>
-		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Container</mat-label>
-					<mat-select [(ngModel)]="profile.container">
-						<mat-option value="mkv">MKV</mat-option>
-						<mat-option value="mp4">MP4</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Video Codec</mat-label>
-					<mat-select [(ngModel)]="profile.video.codec">
-						<mat-option value="h264">H.264</mat-option>
-						<mat-option value="h265">H.265</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Preset</mat-label>
-					<mat-select [(ngModel)]="profile.video.quality">
-						<mat-option value="ultrafast">Ultra Fast (Lowest Quality)</mat-option>
-						<mat-option value="superfast">Super Fast</mat-option>
-						<mat-option value="veryfast">Very Fast</mat-option>
-						<mat-option value="faster">Faster</mat-option>
-						<mat-option value="fast">Fast</mat-option>
-						<mat-option value="medium">Medium</mat-option>
-						<mat-option value="slow">Slow</mat-option>
-						<mat-option value="slower">Slower</mat-option>
-						<mat-option value="veryslow">Very Slow (Highest Quality)</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-		</div>
-		<div class="mt-1">
-			<mat-icon inline="true">audiotrack</mat-icon>
-			<span class="ml-1">Audio</span>
-		</div>
-		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Audio Codecs (Passthru)</mat-label>
-					<mat-select multiple [(ngModel)]="profile.audio.passthrough">
-						<mat-option *ngFor="let codec of codecs" [value]="codec.value">{{codec.label}} {{codec.lossless ? '(Lossless)': ''}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Audio Codec (Transcode)</mat-label>
-					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.audio.codec">
-						<ng-container *ngFor="let codec of codecs">
-							<mat-option *ngIf="!codec.lossless && !codec.value.includes('dts')" [value]="codec.value">{{codec.label}}</mat-option>
-						</ng-container>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Audio Mixdown (Transcode)</mat-label>
-					<mat-select (selectionChange)="calculateRecommendedBitrate()" [(ngModel)]="profile.audio.channels">
-						<mat-option [value]="2">Stereo</mat-option>
-						<mat-option [value]="6">5.1 Channels</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Audio Bitrate (kbps)</mat-label>
-					<input type="number" matInput [(ngModel)]="profile.audio.quality">
-				</mat-form-field>
-			</div>
-		</div>
-		<div class="mt-1">
-			<mat-icon inline="true">translate</mat-icon>
-			<span class="ml-1">Languages</span>
-		</div>
-		<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Wanted</mat-label>
-					<mat-select multiple [(ngModel)]="profile.language.wanted">
-						<mat-option *ngFor="let code of codes" [value]="code.value">{{code.label}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-			<div class="p-1">
-				<mat-form-field>
-					<mat-label>Primary language</mat-label>
-					<mat-select [(ngModel)]="profile.language.primary">
-						<mat-option *ngFor="let code of codes" [value]="code.value">{{code.label}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</div>
-		</div>
-		<div class="mt-1">
-			<mat-label>What this means for my video ?</mat-label>
-			<ol>
-				<li>If the media container of the source is not `{{profile.container}}`; then action is taken to switch the container to `{{profile.container}}`.</li>
-				<li>If the video codec of the source is not `{{profile.video.codec}}`; then action is taken to transcode the video stream to `{{profile.video.codec}}` with `{{profile.video.quality}}` preset with an `{{profile.container}}` container.</li>
-				<li>If the media container of the source is `{{profile.container}}` and the video codec is `{{profile.video.codec}}`; then no action is taken on the video stream.</li>
-			</ol>
-		</div>
-		<div class="mt-1">
-			<mat-label>What this means for my audio and subtitles ?</mat-label>
-			<ol>
-				<li>The following languages are kept: {{profile.language.wanted.join()}}. Other languages are removed to reduce the file size.</li>
-				<li>If the audio track in your primary language ({{profile.language.primary}}) is encoded in {{profile.audio.passthrough.join()}}; then no action is taken to convert the codec.</li>
-				<li>If the audio track in your primary language ({{profile.language.primary}}) is not encoded in {{profile.audio.passthrough.join()}}; then the audio track is transcoded to `{{profile.audio.codec}} ({{profile.audio.channels}} channels)` at a bitrate of {{profile.audio.quality}}kbps.</li>
-				<li>If no audio track matching your primary language ({{profile.language.primary}}) is found, then the next avaialble language from the wanted languages list is considered as your primary language and the same rules are applied.</li>
-				<li>If none of the audio tracks found in the source is in the wanted list, then no action is taken with regards to audio or languages.</li>
-			</ol>
-		</div>
-
-	</div>
-	<div mat-dialog-actions align="center">
-		<div class="p-1">
-			<button color="primary" (click)="save()" mat-raised-button>
-				Save
-			</button>
-		</div>
-		<div class="p-1">
-			<button mat-raised-button mat-dialog-close>
-				Close
-			</button>
-		</div>
-	</div>
+  <div mat-dialog-title>{{ mode === "add" ? "Add" : "Modify" }} Profile</div>
+  <div mat-dialog-content>
+    <div class="p-1">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input type="text" [(ngModel)]="profile.name" matInput />
+      </mat-form-field>
+    </div>
+    <div class="mt-1">
+      <mat-icon inline="true">movie</mat-icon>
+      <span class="ml-1">Video</span>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+      "
+    >
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Container</mat-label>
+          <mat-select [(ngModel)]="profile.container">
+            <mat-option value="mkv">MKV</mat-option>
+            <mat-option value="mp4">MP4</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Video Codec</mat-label>
+          <mat-select [(ngModel)]="profile.video.codec">
+            <mat-option value="h264">H.264</mat-option>
+            <mat-option value="h265">H.265</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Preset</mat-label>
+          <mat-select [(ngModel)]="profile.video.quality">
+            <mat-option value="ultrafast"
+              >Ultra Fast (Lowest Quality)</mat-option
+            >
+            <mat-option value="superfast">Super Fast</mat-option>
+            <mat-option value="veryfast">Very Fast</mat-option>
+            <mat-option value="faster">Faster</mat-option>
+            <mat-option value="fast">Fast</mat-option>
+            <mat-option value="medium">Medium</mat-option>
+            <mat-option value="slow">Slow</mat-option>
+            <mat-option value="slower">Slower</mat-option>
+            <mat-option value="veryslow"
+              >Very Slow (Highest Quality)</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mt-1">
+      <mat-icon inline="true">audiotrack</mat-icon>
+      <span class="ml-1">Audio</span>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+      "
+    >
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Audio Codecs (Passthru)</mat-label>
+          <mat-select multiple [(ngModel)]="profile.audio.passthrough">
+            <mat-option *ngFor="let codec of codecs" [value]="codec.value"
+              >{{ codec.label }}
+              {{ codec.lossless ? "(Lossless)" : "" }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Audio Codec (Transcode)</mat-label>
+          <mat-select
+            (selectionChange)="calculateRecommendedBitrate()"
+            [(ngModel)]="profile.audio.codec"
+          >
+            <ng-container *ngFor="let codec of codecs">
+              <mat-option
+                *ngIf="!codec.lossless && !codec.value.includes('dts')"
+                [value]="codec.value"
+                >{{ codec.label }}</mat-option
+              >
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Audio Mixdown (Transcode)</mat-label>
+          <mat-select
+            (selectionChange)="calculateRecommendedBitrate()"
+            [(ngModel)]="profile.audio.channels"
+          >
+            <mat-option [value]="2">Stereo</mat-option>
+            <mat-option [value]="6">5.1 Channels</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Audio Bitrate (kbps)</mat-label>
+          <input type="number" matInput [(ngModel)]="profile.audio.quality" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mt-1">
+      <mat-icon inline="true">translate</mat-icon>
+      <span class="ml-1">Languages</span>
+    </div>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+      "
+    >
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Wanted</mat-label>
+          <mat-select multiple [(ngModel)]="profile.language.wanted">
+            <mat-option *ngFor="let code of codes" [value]="code.value">{{
+              code.label
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="p-1">
+        <mat-form-field>
+          <mat-label>Primary language</mat-label>
+          <mat-select [(ngModel)]="profile.language.primary">
+            <mat-option *ngFor="let code of codes" [value]="code.value">{{
+              code.label
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="mt-1">
+      <mat-label>What this means for my video ?</mat-label>
+      <ol>
+        <li>
+          If the media container of the source is not `{{ profile.container }}`;
+          then action is taken to switch the container to `{{
+            profile.container
+          }}`.
+        </li>
+        <li>
+          If the video codec of the source is not `{{ profile.video.codec }}`;
+          then action is taken to transcode the video stream to `{{
+            profile.video.codec
+          }}` with `{{ profile.video.quality }}` preset with an `{{
+            profile.container
+          }}` container.
+        </li>
+        <li>
+          If the media container of the source is `{{ profile.container }}` and
+          the video codec is `{{ profile.video.codec }}`; then no action is
+          taken on the video stream.
+        </li>
+      </ol>
+    </div>
+    <div class="mt-1">
+      <mat-label>What this means for my audio and subtitles ?</mat-label>
+      <ol>
+        <li>
+          The following languages are kept:
+          {{ profile.language.wanted.join() }}. Other languages are removed to
+          reduce the file size.
+        </li>
+        <li>
+          If the audio track in your primary language ({{
+            profile.language.primary
+          }}) is encoded in {{ profile.audio.passthrough.join() }}; then no
+          action is taken to convert the codec.
+        </li>
+        <li>
+          If the audio track in your primary language ({{
+            profile.language.primary
+          }}) is not encoded in {{ profile.audio.passthrough.join() }}; then the
+          audio track is transcoded to `{{ profile.audio.codec }} ({{
+            profile.audio.channels
+          }}
+          channels)` at a bitrate of {{ profile.audio.quality }}kbps.
+        </li>
+        <li>
+          If no audio track matching your primary language ({{
+            profile.language.primary
+          }}) is found, then the next avaialble language from the wanted
+          languages list is considered as your primary language and the same
+          rules are applied.
+        </li>
+        <li>
+          If none of the audio tracks found in the source is in the wanted list,
+          then no action is taken with regards to audio or languages.
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div mat-dialog-actions align="center">
+    <div class="p-1">
+      <button color="primary" (click)="save()" mat-raised-button>Save</button>
+    </div>
+    <div class="p-1">
+      <button mat-raised-button mat-dialog-close>Close</button>
+    </div>
+  </div>
 </div>

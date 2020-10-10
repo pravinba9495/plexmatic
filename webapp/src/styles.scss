@@ -1,65 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #ececec;}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #ececec;
+}
 
-small,.small {
-	font-weight: lighter;
-	font-size: 12px;
+small,
+.small {
+  font-weight: lighter;
+  font-size: 12px;
 }
 
 .p-1 {
-	padding: 5px;
+  padding: 5px;
 }
 
 .p-2 {
-	padding: 10px;
+  padding: 10px;
 }
 
 .m-1 {
-	margin: 5px;
+  margin: 5px;
 }
 
 .m-2 {
-	margin: 10px;
+  margin: 10px;
 }
 
 .mt-1 {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .mt-2 {
-	margin-top: 10px;
+  margin-top: 10px;
 }
 
 .mt-3 {
-	margin-top: 15px;
+  margin-top: 15px;
 }
 
 .ml-1 {
-	margin-left: 5px;
+  margin-left: 5px;
 }
 
 .ml-2 {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 .ml-3 {
-	margin-left: 15px;
+  margin-left: 15px;
 }
 
 .text-grey {
-	color: grey;
+  color: grey;
 }
 
 .font-weight-lighter {
-	font-weight: lighter;
+  font-weight: lighter;
 }
 
 .font-size-medium {
-	font-size: 14px;
+  font-size: 14px;
 }
 
 .mat-chip {
-	font-size: 10px;
+  font-size: 10px;
 }
