@@ -1,4 +1,3 @@
-const { profile } = require("console");
 const { ffprobe } = require("./bash");
 const { getProfilebyIdFromDb } = require("./db");
 
