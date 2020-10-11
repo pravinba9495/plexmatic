@@ -1,22 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
-import { QueueItem } from 'src/app/models/queue-item';
-import { environment } from 'src/environments/environment';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { MatCheckboxChange } from "@angular/material/checkbox";
+import { MatDialog } from "@angular/material/dialog";
+import { QueueItem } from "src/app/models/queue-item";
+import { environment } from "src/environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class QueueService {
-
   private _items: QueueItem[] = [];
   private _tempQueue = [];
 
-  constructor(
-    private http: HttpClient,
-    public dialog: MatDialog,
-  ) { 
+  constructor(private http: HttpClient, public dialog: MatDialog) {
     this.getQueues();
   }
 
@@ -37,7 +33,7 @@ export class QueueService {
   }
 
   getQueues() {
-    this.http.get(environment.apiURL + '/queues').subscribe((response: any) => {
+    this.http.get(environment.apiURL + "/queues").subscribe((response: any) => {
       this._items = response.data;
     });
   }
@@ -47,10 +43,10 @@ export class QueueService {
   }
 
   addToQueue(queues: QueueItem[]) {
-    return this.http.post(environment.apiURL + '/queues', queues).toPromise();
+    return this.http.post(environment.apiURL + "/queues", queues).toPromise();
   }
 
   start() {
-    return this.http.get(environment.apiURL + '/queues/start').toPromise();
+    return this.http.get(environment.apiURL + "/queues/start").toPromise();
   }
 }

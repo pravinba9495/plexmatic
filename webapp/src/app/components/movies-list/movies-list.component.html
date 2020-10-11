@@ -1,29 +1,49 @@
 <div class="p-2">
-	<div class="m-2" align="center" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-		<div class="m-1">
-			<button color="primary" *ngIf="queueService.queues.length > 0" (click)="addJob()" [disabled]="moviesService.progress" mat-raised-button>
-				<mat-icon>add_circle_outline</mat-icon>
-				&nbsp;
-				ADD TO QUEUE
-			</button>
-		</div>
-		<div class="m-1">
-			<button color="warn" [disabled]="moviesService.progress" mat-raised-button (click)="refreshList()">
-				<mat-icon>repeat</mat-icon>
-				&nbsp;
-				REFRESH
-			</button>
-		</div>
-	</div>
-	<div class="m-2 p-1" align="center">
-		<span *ngIf="moviesService.items.length">{{moviesService.items.length}} movies found</span>
-		<span *ngIf="!moviesService.items.length">No movies found</span>
-	</div>
-	<div class="m-2" *ngFor="let item of moviesService.items">
-		<mat-card>
-			<mat-card-content>
-				<app-movie-entry [item]="item"></app-movie-entry>
-			</mat-card-content>
-		</mat-card>
-	</div>
+  <div
+    class="m-2"
+    align="center"
+    style="
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <div class="m-1">
+      <button
+        color="primary"
+        *ngIf="queueService.queues.length > 0"
+        (click)="addJob()"
+        [disabled]="moviesService.progress"
+        mat-raised-button
+      >
+        <mat-icon>add_circle_outline</mat-icon>
+        &nbsp; ADD TO QUEUE
+      </button>
+    </div>
+    <div class="m-1">
+      <button
+        color="warn"
+        [disabled]="moviesService.progress"
+        mat-raised-button
+        (click)="refreshList()"
+      >
+        <mat-icon>repeat</mat-icon>
+        &nbsp; REFRESH
+      </button>
+    </div>
+  </div>
+  <div class="m-2 p-1" align="center">
+    <span *ngIf="moviesService.items.length"
+      >{{ moviesService.items.length }} movies found</span
+    >
+    <span *ngIf="!moviesService.items.length">No movies found</span>
+  </div>
+  <div class="m-2" *ngFor="let item of moviesService.items">
+    <mat-card>
+      <mat-card-content>
+        <app-movie-entry [item]="item"></app-movie-entry>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
