@@ -13,7 +13,7 @@ const mediaProcessor = (media) => {
           path.extname(filename)
         )
       ) {
-        resolve();
+        reject(new Error('Invalid extension for the media file'));
         return;
       }
       const streams = ffprobe(filename).streams.map((stream) => {
@@ -64,7 +64,8 @@ const mediaProcessor = (media) => {
       );
 
       let filteredSubtitleStreams = streams.filter(
-        (stream) => stream.codec_type === "subtitle"
+        (stream) => stream.codec_type === "subtitle" &&
+        profile.language.wanted.includes(stream.language)
       );
 
       if (filteredVideoStreams.length === 1 && filteredAudioStreams.length > 0) {
@@ -90,7 +91,7 @@ const mediaProcessor = (media) => {
             } else {
               // Transcode codec
               params.input.push(`-map 0:${stream.index}`);
-              params.output.push(`-c:${params.input.length - 1} ${profile.audio.codec} -ac:${params.input.length - 1} ${profile.audio.channels} -b:${params.input.length - 1} ${profile.audio.quality}k -metadata:s:${params.input.length - 1} title="Audio Track (${profile.language.primary})" -disposition:${params.input.length - 1} default`);
+              params.output.push(`-c:${params.input.length - 1} ${profile.audio.codec} -ac:${params.input.length - 1} ${profile.audio.channels} -metadata:s:${params.input.length - 1} title="Audio Track (${profile.language.primary})" -disposition:${params.input.length - 1} default`);
             }
             break;
           }
@@ -105,20 +106,23 @@ const mediaProcessor = (media) => {
         }
 
         // Copy all subtitles
-        params.input.push(`-map 0:s?`);
-        params.output.push(`-c:s copy`);
+        for (let stream of filteredSubtitleStreams) {
+          params.input.push(`-map 0:${stream.index}`);
+          params.output.push(`-c:${params.input.length - 1} copy`);
+        }
 
         const splittedPath = filename.split('/');
-        const fName = splittedPath[splittedPath.length - 1].replace(path.extname(filename), `_${new Date().getTime()}.${profile.container}`);
-        ffmpeg(filename, params.input.concat(params.output).join(' '), `/output/${fName}`);
+        const fName = splittedPath[splittedPath.length - 1].replace(path.extname(filename), `.${profile.container}`);
+        await ffmpeg(filename, params.input.concat(params.output).join(' '), `/output/${fName}`);
         resolve();
       } else {
         console.log(streams);
-        reject(`Could not process: ${filename}`);
+        reject(new Error(`Matching languages not found. Process this file manually.`));
         return;
       }
     } catch (error) {
       reject(error);
+      return;
     }
   });
 };

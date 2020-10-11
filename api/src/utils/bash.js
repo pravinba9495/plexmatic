@@ -1,4 +1,5 @@
-const { execSync } = require("child_process");
+const { exec, execSync, spawn } = require("child_process");
+const process = require('process');
 
 const ffprobe = (path) => {
   const { streams } = JSON.parse(
@@ -15,11 +16,31 @@ const ffprobe = (path) => {
 };
 
 const ffmpeg = (path, params, output) => {
-  const command = `ffmpeg -y -i "${path}" ${params} "${output}"`;
+  const command = `ffmpeg -y -i "${path}" ${params} -max_muxing_queue_size 9999 "${output}"`;
   console.log(command);
-  return execSync(command, {
-    stdio: "pipe",
-  }).toString();
+  return new Promise((resolve, reject) => {
+    let ps = exec(command);
+    ps.stdout.pipe(process.stdout);
+    ps.stderr.pipe(process.stdout);
+    process.on('SIGINT', () => {
+      ps.kill();
+    });
+    process.on('exit', () => {
+      ps.kill();
+    });
+    process.on('SIGABRT', () => {
+      ps.kill();
+    });
+    ps.on('close', (code, signal) => {
+      console.log(`Code: ${code}`);
+      console.log(`Signal: ${signal}`);
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error('Non zero exit code'));
+      }
+    });
+  });
 };
 
 const rename = (path, newPath) => {
