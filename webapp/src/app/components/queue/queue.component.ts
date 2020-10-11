@@ -9,7 +9,9 @@ import { QueueService } from "src/app/services/queue.service";
 export class QueueComponent implements OnInit {
   timer;
 
-  constructor(public queueService: QueueService) {}
+  constructor(
+    public queueService: QueueService,
+  ) { }
 
   ngOnInit(): void {
     this.timer = setInterval(() => {

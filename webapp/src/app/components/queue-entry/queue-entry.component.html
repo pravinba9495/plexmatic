@@ -11,9 +11,7 @@
     >
       <div>
         <mat-checkbox [disabled]="item.started" color="primary"
-          >{{ item.filename }}&nbsp;&nbsp;<mat-chip>{{
-            profileService.getProfilebyID(item.profileId).name
-          }}</mat-chip></mat-checkbox
+          >{{ item.filename }}</mat-checkbox
         >
       </div>
       <div>
@@ -26,13 +24,21 @@
           <mat-icon style="font-size: 25px" inline="true">stop_circle</mat-icon>
         </button>
         <div
-          *ngIf="item.started && item.finished"
+          *ngIf="item.started && item.finished && item.status === 'Completed'"
           mat-icon-button
           matTooltipPosition="left"
           [matTooltip]="'Finished'"
         >
           <mat-icon style="font-size: 25px" inline="true">check</mat-icon>
         </div>
+        <div
+        *ngIf="item.started && item.finished && item.status.includes('Error')"
+        mat-icon-button
+        matTooltipPosition="left"
+        [matTooltip]="'Finished'"
+      >
+        <mat-icon style="font-size: 25px" inline="true">error</mat-icon>
+      </div>
         <button
           *ngIf="!item.started"
           mat-icon-button
@@ -43,18 +49,20 @@
         </button>
       </div>
     </div>
-    <div>
-      <div class="p-1">
-        <mat-chip-list> </mat-chip-list>
-      </div>
-    </div>
     <div class="mt-2">
-      <mat-progress-bar
+      <div class="small">
+        {{item.status}}
+      </div>
+      <div class="mt-1">
+        <mat-progress-bar
         [style.visibility]="
           item.started && !item.finished ? 'visible' : 'hidden'
         "
-        mode="indeterminate"
+        [mode]="'buffer'"
+        [bufferValue]="0"
+        [value]="0"
       ></mat-progress-bar>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>
