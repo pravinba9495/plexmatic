@@ -16,6 +16,7 @@ const ffprobe = (path) => {
 
 const ffmpeg = (path, params, output) => {
   const command = `ffmpeg -y -i "${path}" ${params} "${output}"`;
+  console.log(command);
   return execSync(command, {
     stdio: "pipe",
   }).toString();

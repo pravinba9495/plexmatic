@@ -190,10 +190,11 @@ const saveMovieInDb = (movie) => {
     db.run(
       `INSERT INTO movies
 			(file, type, path, children)
-			VALUES (?,?,?, ?)
+			VALUES (?,?,?,?)
 			`,
       [movie.file, movie.type, movie.path, JSON.stringify(movie.children)],
       (error) => {
+        console.log(error);
         if (error) {
           reject(error);
         }
@@ -212,6 +213,7 @@ const saveTvShowInDb = (tv) => {
 			`,
       [tv.file, tv.type, tv.path, JSON.stringify(tv.children)],
       (error) => {
+        console.log(error);
         if (error) {
           reject(error);
         }

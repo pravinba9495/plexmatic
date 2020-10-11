@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const { mediaProcessor } = require("../utils/media");
-const { ffmpeg } = require("./../utils/bash");
+
 let queues = [];
+
 router.get("/", (request, response) => {
   response.send({
     data: queues.map((q) => {
@@ -9,7 +10,7 @@ router.get("/", (request, response) => {
         ...q,
         started: q.started || false,
         finished: q.finished || false,
-        status: q.status || ''
+        status: q.status || "",
       };
     }),
   });
@@ -21,7 +22,9 @@ router.get("/start", (request, response) => {
       response.status(400).send({ data: "A queue is already in progress" });
       return;
     } else {
-      begin();
+      setTimeout(() => {
+        begin(0);
+      });
       response.send({ data: "OK" });
     }
   } else {
@@ -39,30 +42,34 @@ router.post("/", (request, response) => {
   response.send({ data: queues });
 });
 
-const begin = (index = 0) => {
+const begin = (index) => {
+
   queue = queues[index];
-  setTimeout(async () => {
-    try {
-      queue.started = true;
-      queue.finished = false;
-      await mediaProcessor(queue);
-      queue.finished = true;
-      queue.status = 'Completed'
-      console.log(`Finished: ${queue.filename}`);
-    } catch (error) {
-      queue.finished = true;
-      queue.status = `Error: ${error}`;
-      console.error(error);
-    }
+  queue.started = true;
+  queue.finished = false;
+  queues[index] = queue;
+  mediaProcessor(queue).then(() => {
+    queue.finished = true;
+    queue.status = "Completed";
+    console.log(`Finished: ${queue.filename}`);
+
     if (queues[index + 1]) {
       begin(index + 1);
     } else {
       // Add to history
-      setTimeout(() => {
-        queues = [];
-      }, 60000);
+    }
+  }).catch((error) => {
+    console.error(error);
+    queue.finished = true;
+    queue.status = `Error: ${error}`;
+
+    if (queues[index + 1]) {
+      begin(index + 1);
+    } else {
+      // Add to history
     }
   });
+
 };
 
 module.exports = router;
