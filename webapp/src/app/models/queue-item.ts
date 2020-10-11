@@ -3,4 +3,5 @@ export class QueueItem {
   public profileId: number;
   public started?: boolean;
   public finished?: boolean;
+  public status?: string;
 }
