@@ -1,7 +1,7 @@
 const { execSync } = require("child_process");
 
 const ffprobe = (path) => {
-	const { streams } = JSON.parse(
+  const { streams } = JSON.parse(
     execSync(
       `ffprobe -show_streams -show_entries streams:format=filename -of json "${path}"`,
       {
@@ -29,7 +29,7 @@ const rename = (path, newPath) => {
 };
 
 module.exports = {
-	rename,
-	ffprobe,
-	ffmpeg,
-}
+  rename,
+  ffprobe,
+  ffmpeg,
+};
