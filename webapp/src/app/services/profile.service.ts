@@ -1,18 +1,15 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { Profile } from '../models/profile';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
+import { Profile } from "../models/profile";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ProfileService {
-
   private _items: any[] = [];
 
-  constructor(
-    private http: HttpClient,
-  ) { 
+  constructor(private http: HttpClient) {
     this.getProfiles();
   }
 
@@ -21,20 +18,26 @@ export class ProfileService {
   }
 
   getProfiles() {
-    this.http.get(environment.apiURL + '/profiles').subscribe((response: any) => {
-      this._items = response.data;
-    });
+    this.http
+      .get(environment.apiURL + "/profiles")
+      .subscribe((response: any) => {
+        this._items = response.data;
+      });
   }
 
   getProfilebyID(id: number) {
-    return this.items.find(p => p.id === id);
+    return this.items.find((p) => p.id === id);
   }
 
   saveProfile(profile: Profile) {
-    return this.http.post(environment.apiURL + '/profiles', profile).toPromise();
+    return this.http
+      .post(environment.apiURL + "/profiles", profile)
+      .toPromise();
   }
 
   updateProfile(profile: Profile) {
-    return this.http.patch(environment.apiURL + `/profiles/${profile.id}`, profile).toPromise();
+    return this.http
+      .patch(environment.apiURL + `/profiles/${profile.id}`, profile)
+      .toPromise();
   }
 }
