@@ -9,6 +9,7 @@ router.get("/", (request, response) => {
         ...q,
         started: q.started || false,
         finished: q.finished || false,
+        status: q.status || ''
       };
     }),
   });
@@ -46,15 +47,20 @@ const begin = (index = 0) => {
       queue.finished = false;
       await mediaProcessor(queue);
       queue.finished = true;
-      console.log("finished");
+      queue.status = 'Completed'
+      console.log(`Finished: ${queue.filename}`);
     } catch (error) {
+      queue.finished = true;
+      queue.status = `Error: ${error}`;
       console.error(error);
     }
     if (queues[index + 1]) {
       begin(index + 1);
     } else {
       // Add to history
-      queues = [];
+      setTimeout(() => {
+        queues = [];
+      }, 60000);
     }
   });
 };

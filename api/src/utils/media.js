@@ -8,6 +8,12 @@ const mediaProcessor = (media) => {
       const { profileId, filename } = media;
       const profiles = await getProfilebyIdFromDb(profileId);
       const profile = profiles && profiles.length > 0 ? profiles[0] : null;
+      if (
+        !(['.mkv', '.mp4', '.mts', '.ts', '.m2ts', '.avi'].includes(path.extname(filename)))
+      ) {
+        resolve();
+        return;
+      }
       const streams = ffprobe(filename).streams.map((stream) => {
         const {
           index,
@@ -26,8 +32,8 @@ const mediaProcessor = (media) => {
           codec_type,
           channels,
           channel_layout,
-          language: tags.language || "und",
-          default: disposition ? disposition.default : 0,
+          language: tags ? tags.language || "und" : "und",
+          default: disposition ? disposition.default || 0 : 0,
         };
       });
       const params = [];
@@ -41,30 +47,28 @@ const mediaProcessor = (media) => {
       const filteredVideoStreams = streams.filter(
         (stream) => stream.codec_type === "video" && stream.default === 1
       );
-      console.log(filteredVideoStreams);
+      console.assert(filteredVideoStreams.length === 1, 'There should be at least one video stream: ' + filename);
+
       let filteredAudioStreams = streams.filter(
         (stream) =>
           stream.codec_type === "audio" &&
           profile.language.wanted.includes(stream.language)
       );
-      if (filteredAudioStreams.length === 0) {
-        filteredAudioStreams = streams.filter(
-          (stream) => stream.codec_type === "audio"
-        );
-      }
-      console.log(filteredAudioStreams);
+      console.assert(filteredAudioStreams.length > 0, 'There should be at least one audio stream: ' + filename);
 
       let filteredSubtitleStreams = streams.filter(
         (stream) =>
           stream.codec_type === "subtitle" &&
           profile.language.wanted.includes(stream.language)
       );
-      if (filteredSubtitleStreams.length === 0) {
-        filteredSubtitleStreams = streams.filter(
-          (stream) => stream.codec_type === "subtitle"
-        );
+
+      if (filteredVideoStreams.length === 1 && filteredAudioStreams.length > 0) {
+        
+      } else {
+        console.log(streams);
+        reject(`Could not process: ${filename}`);
+        return;
       }
-      console.log(filteredSubtitleStreams);
 
       resolve();
     } catch (error) {
