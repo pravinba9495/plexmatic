@@ -13,10 +13,17 @@ export class QueueComponent implements OnInit {
     public queueService: QueueService,
   ) { }
 
-  ngOnInit(): void {
-    this.timer = setInterval(() => {
-      this.queueService.getQueues();
-    }, 1000);
+  async ngOnInit() {
+    try {
+      await this.queueService.getQueues();
+      this.timer = setTimeout(() => {
+        this.ngOnInit();
+      }, 1000);
+    } catch (error) {
+      this.timer = setTimeout(() => {
+        this.ngOnInit();
+      }, 1000);
+    }
   }
 
   get canShowStartButton() {
@@ -29,9 +36,19 @@ export class QueueComponent implements OnInit {
     return ret;
   }
 
+  get canShowClearButton() {
+    let ret = true;
+    this.queueService.items.forEach((q) => {
+      if (q.started && !q.finished) {
+        ret = false;
+      }
+    });
+    return ret;
+  }
+
   ngOnDestroy() {
     try {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
     } catch (error) {}
   }
 }
