@@ -40,15 +40,20 @@ router.post('/', (request, response) => {
 const begin = (index = 0) => {
 	queue = queues[index];
 	setTimeout(async () => {
-		queue.started = true;
-		queue.finished = false;
-		await mediaProcessor(queue);
-		queue.finished = true;
-		console.log('finished');
+		try {
+			queue.started = true;
+			queue.finished = false;
+			await mediaProcessor(queue);
+			queue.finished = true;
+			console.log('finished');
+		} catch (error) {
+			console.error(error);
+		}
 		if (queues[index + 1]) {
 			begin(index + 1);
 		} else {
 			// Add to history
+			queues = [];
 		}
 	});
 }
