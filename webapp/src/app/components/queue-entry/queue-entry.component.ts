@@ -12,10 +12,22 @@ export class QueueEntryComponent implements OnInit {
   @Input()
   item: QueueItem;
 
+  public stopInProgress = false;
+
   constructor(
     public profileService: ProfileService,
     public queueService: QueueService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("New render");
+  }
+
+  stop() {
+    this.stopInProgress = true;
+    console.log(this.stopInProgress);
+    let timer = setTimeout(() => {
+      this.queueService.stop();
+    }, 1000);
+  }
 }

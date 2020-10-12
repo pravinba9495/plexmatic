@@ -17,11 +17,11 @@
       <div>
         <button
           *ngIf="item.started && !item.finished"
-          [disabled]="queueService.inProgress"
+          [disabled]="stopInProgress"
           mat-icon-button
           matTooltipPosition="left"
           [matTooltip]="'Stop'"
-          (click)="queueService.stop()"
+          (click)="stop()"
         >
           <mat-icon style="font-size: 25px" inline="true">stop_circle</mat-icon>
         </button>

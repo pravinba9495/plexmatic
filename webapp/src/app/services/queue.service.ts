@@ -34,7 +34,24 @@ export class QueueService {
     return new Promise((resolve, reject) => {
       this.http.get(environment.apiURL + "/queues").subscribe(
         (response: any) => {
-          this._items = response.data;
+          for (let q of response.data) {
+            let index = this.items.map((item) => item.id).indexOf(q.id);
+            if (index > -1) {
+              for (let key of Object.keys(q)) {
+                this._items[index][key] = q[key];
+              }
+            } else {
+              this._items.push(q);
+            }
+          }
+          for (let i = this.items.length - 1; 0 <= i; i--) {
+            let index = response.data
+              .map((q) => q.id)
+              .indexOf(this.items[i].id);
+            if (index === -1) {
+              this._items.splice(i, 1);
+            }
+          }
           resolve();
         },
         (error) => {
