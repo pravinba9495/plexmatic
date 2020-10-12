@@ -1,4 +1,4 @@
-<mat-card class="mat-elevation-z4">
+<mat-card class="mat-elevation-z1">
   <mat-card-content>
     <div
       style="
@@ -17,9 +17,11 @@
       <div>
         <button
           *ngIf="item.started && !item.finished"
+          [disabled]="queueService.inProgress"
           mat-icon-button
           matTooltipPosition="left"
           [matTooltip]="'Stop'"
+          (click)="queueService.stop()"
         >
           <mat-icon style="font-size: 25px" inline="true">stop_circle</mat-icon>
         </button>
@@ -29,7 +31,7 @@
           matTooltipPosition="left"
           [matTooltip]="'Finished'"
         >
-          <mat-icon style="font-size: 25px" inline="true">check</mat-icon>
+          <mat-icon style="font-size: 25px; color: green;" inline="true">check</mat-icon>
         </div>
         <div
         *ngIf="item.started && item.finished && item.status.includes('Error')"
@@ -37,20 +39,21 @@
         matTooltipPosition="left"
         [matTooltip]="'Finished'"
       >
-        <mat-icon style="font-size: 25px" inline="true">error</mat-icon>
+        <mat-icon style="font-size: 25px; color: red;" inline="true">error</mat-icon>
       </div>
         <button
           *ngIf="!item.started"
           mat-icon-button
           matTooltipPosition="left"
           [matTooltip]="'Remove from queue'"
+          (click)="queueService.removeFromQueue(item.filename)"
         >
           <mat-icon style="font-size: 25px" inline="true">delete</mat-icon>
         </button>
       </div>
     </div>
     <div class="mt-2">
-      <div class="small">
+      <div class="mat-small">
         {{item.status}}
       </div>
       <div class="mt-1">
@@ -58,9 +61,7 @@
         [style.visibility]="
           item.started && !item.finished ? 'visible' : 'hidden'
         "
-        [mode]="'buffer'"
-        [bufferValue]="0"
-        [value]="0"
+        [mode]="'indeterminate'"
       ></mat-progress-bar>
       </div>
     </div>

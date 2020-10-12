@@ -22,6 +22,7 @@ export class TvListComponent implements OnInit {
 
   ngOnInit(): void {
     this.queueService.resetQueues();
+    this.tvService.getTvShows();
   }
 
   public async refreshList() {

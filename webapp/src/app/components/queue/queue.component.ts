@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { QueueService } from "src/app/services/queue.service";
 
 @Component({
@@ -6,17 +6,15 @@ import { QueueService } from "src/app/services/queue.service";
   templateUrl: "./queue.component.html",
   styles: [],
 })
-export class QueueComponent implements OnInit {
-  timer;
+export class QueueComponent implements OnInit, OnDestroy {
+  private timer;
 
   constructor(
     public queueService: QueueService,
   ) { }
 
-  ngOnInit(): void {
-    this.timer = setInterval(() => {
-      this.queueService.getQueues();
-    }, 1000);
+  ngOnInit() {
+    this.queueService.getQueues();
   }
 
   get canShowStartButton() {
@@ -29,9 +27,19 @@ export class QueueComponent implements OnInit {
     return ret;
   }
 
+  get canShowClearButton() {
+    let ret = true;
+    this.queueService.items.forEach((q) => {
+      if (q.started && !q.finished) {
+        ret = false;
+      }
+    });
+    return ret;
+  }
+
   ngOnDestroy() {
     try {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
     } catch (error) {}
   }
 }

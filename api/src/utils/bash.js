@@ -1,4 +1,21 @@
-const { execSync } = require("child_process");
+const { exec, execSync } = require("child_process");
+const process = require('process');
+const {emit} = require('./socket');
+
+const kill = () => {
+  return new Promise((resolve, reject) => {
+    let ps = exec(`pkill ffmpeg`);
+    ps.on('close', (code, signal) => {
+      console.log(`Code: ${code}`);
+      console.log(`Signal: ${signal}`);
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`Non zero exit code, Code: ${code}, Signal: ${signal}`));
+      }
+    });
+  })
+}
 
 const ffprobe = (path) => {
   const { streams } = JSON.parse(
@@ -15,10 +32,33 @@ const ffprobe = (path) => {
 };
 
 const ffmpeg = (path, params, output) => {
-  const command = `ffmpeg -y -i "${path}" ${params} "${output}"`;
-  return execSync(command, {
-    stdio: "pipe",
-  }).toString();
+  const command = `ffmpeg -y -i "${path}" ${params} -max_muxing_queue_size 9999 "${output}"`;
+  console.log(command);
+  return new Promise((resolve, reject) => {
+    let ps = exec(command);
+    ps.stdout.pipe(process.stdout);
+    ps.stderr.pipe(process.stdout);
+    process.on('SIGINT', () => {
+      kill();
+    });
+    process.on('exit', () => {
+      kill();
+    });
+    process.on('SIGABRT', () => {
+      kill();
+    });
+    ps.on('close', (code, signal) => {
+      console.log(`Code: ${code}`);
+      console.log(`Signal: ${signal}`);
+      if (code === 0) {
+        emit('closed');
+        resolve();
+      } else {
+        emit('closed');
+        reject(new Error(`Non zero exit code, Code: ${code}, Signal: ${signal}`));
+      }
+    });
+  });
 };
 
 const rename = (path, newPath) => {
@@ -32,4 +72,5 @@ module.exports = {
   rename,
   ffprobe,
   ffmpeg,
+  kill,
 };

@@ -12,9 +12,7 @@ export class QueueService {
   private _items: QueueItem[] = [];
   private _tempQueue = [];
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
-    this.getQueues();
-  }
+  constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   get items(): QueueItem[] {
     return this._items;
@@ -33,8 +31,13 @@ export class QueueService {
   }
 
   getQueues() {
-    this.http.get(environment.apiURL + "/queues").subscribe((response: any) => {
-      this._items = response.data;
+    return new Promise((resolve, reject) => {
+      this.http.get(environment.apiURL + "/queues").subscribe((response: any) => {
+        this._items = response.data;
+        resolve();
+      }, (error) => {
+          reject(error);
+      });
     });
   }
 
@@ -49,4 +52,17 @@ export class QueueService {
   start() {
     return this.http.get(environment.apiURL + "/queues/start").toPromise();
   }
+
+  stop() {
+    return this.http.get(environment.apiURL + "/queues/stop").toPromise();
+  }
+
+  clear() {
+    return this.http.get(environment.apiURL + "/queues/clear").toPromise();
+  }
+
+  removeFromQueue(filename: string) {
+    return this.http.post(environment.apiURL + `/queues/remove`, {filename}).toPromise();
+  }
+
 }

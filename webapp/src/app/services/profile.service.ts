@@ -9,9 +9,7 @@ import { Profile } from "../models/profile";
 export class ProfileService {
   private _items: any[] = [];
 
-  constructor(private http: HttpClient) {
-    this.getProfiles();
-  }
+  constructor(private http: HttpClient) { }
 
   get items(): any[] {
     return this._items;
