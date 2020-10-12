@@ -13,17 +13,8 @@ export class QueueComponent implements OnInit, OnDestroy {
     public queueService: QueueService,
   ) { }
 
-  async ngOnInit() {
-    try {
-      await this.queueService.getQueues();
-      this.timer = setTimeout(() => {
-        this.ngOnInit();
-      }, 1000);
-    } catch (error) {
-      this.timer = setTimeout(() => {
-        this.ngOnInit();
-      }, 1000);
-    }
+  ngOnInit() {
+    this.queueService.getQueues();
   }
 
   get canShowStartButton() {

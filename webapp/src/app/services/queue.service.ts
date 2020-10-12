@@ -12,9 +12,7 @@ export class QueueService {
   private _items: QueueItem[] = [];
   private _tempQueue = [];
 
-  constructor(private http: HttpClient, public dialog: MatDialog) {
-    this.getQueues();
-  }
+  constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   get items(): QueueItem[] {
     return this._items;
