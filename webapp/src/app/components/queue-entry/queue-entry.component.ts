@@ -23,7 +23,6 @@ export class QueueEntryComponent implements OnInit {
 
   stop() {
     this.stopInProgress = true;
-    console.log(this.stopInProgress);
     let timer = setTimeout(() => {
       this.queueService.stop();
     }, 1000);
