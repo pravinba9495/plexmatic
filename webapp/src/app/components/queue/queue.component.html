@@ -23,6 +23,15 @@
       >
         START
       </button>
+      &nbsp;
+      <button
+        *ngIf="queueService.items.length > 0 && canShowClearButton"
+        mat-raised-button
+        color="warn"
+        (click)="queueService.clear()"
+      >
+        CLEAR
+      </button>
     </div>
   </div>
   <div class="m-2" *ngFor="let item of queueService.items">
