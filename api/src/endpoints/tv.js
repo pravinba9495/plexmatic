@@ -2,6 +2,7 @@ const router = require("express").Router();
 const {
   getTvShowsListFromDb,
   refreshList,
+  saveTvShowsInDb,
 } = require("../utils/db");
 
 router.get("/", async (request, response) => {
@@ -17,6 +18,7 @@ router.get("/", async (request, response) => {
 router.get("/refresh", async (request, response) => {
   try {
     const data = await refreshList("tv");
+    await saveTvShowsInDb(data);
     response.send({ data });
   } catch (error) {
     console.error(error);
