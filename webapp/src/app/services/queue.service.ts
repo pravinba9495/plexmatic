@@ -55,6 +55,10 @@ export class QueueService {
     return this.http.get(environment.apiURL + "/queues/start").toPromise();
   }
 
+  stop() {
+    return this.http.get(environment.apiURL + "/queues/stop").toPromise();
+  }
+
   clear() {
     return this.http.get(environment.apiURL + "/queues/clear").toPromise();
   }

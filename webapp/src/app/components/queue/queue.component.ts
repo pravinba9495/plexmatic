@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { QueueService } from "src/app/services/queue.service";
 
 @Component({
@@ -6,8 +6,8 @@ import { QueueService } from "src/app/services/queue.service";
   templateUrl: "./queue.component.html",
   styles: [],
 })
-export class QueueComponent implements OnInit {
-  timer;
+export class QueueComponent implements OnInit, OnDestroy {
+  private timer;
 
   constructor(
     public queueService: QueueService,
