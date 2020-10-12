@@ -19,9 +19,7 @@ export class QueueEntryComponent implements OnInit {
     public queueService: QueueService
   ) {}
 
-  ngOnInit(): void {
-    console.log("New render");
-  }
+  ngOnInit(): void { }
 
   stop() {
     this.stopInProgress = true;

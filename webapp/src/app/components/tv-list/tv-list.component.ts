@@ -24,6 +24,7 @@ export class TvListComponent implements OnInit {
 
   ngOnInit(): void {
     this.queueService.resetQueues();
+    this.queueService.getQueues();
     this.profileService.getProfiles();
     this.tvService.getTvShows();
   }

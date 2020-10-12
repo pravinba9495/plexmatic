@@ -35,8 +35,10 @@
         </button>
       </div>
     </div>
-    <div class="m-2" *ngFor="let item of queueService.items">
-      <app-queue-entry [item]="item"></app-queue-entry>
+    <div class="m-2" style="max-height: calc(100vh - 170px); overflow: auto;">
+      <div class="m-2" *ngFor="let item of queueService.items">
+        <app-queue-entry [item]="item"></app-queue-entry>
+      </div>
     </div>
   </div>
 </div>
