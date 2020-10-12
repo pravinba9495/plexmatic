@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { kill } = require("../utils/bash");
 const { mediaProcessor } = require("../utils/media");
 
 let queues = [];
@@ -34,6 +35,10 @@ router.get("/clear", (request, response) => {
   queues = [];
   response.send({ data: "OK" });
 });
+router.get("/stop", (request, response) => {
+  kill();
+  response.send({ data: "OK" });
+});
 
 router.post("/remove", (request, response) => {
   const { filename } = request.body;
@@ -62,7 +67,6 @@ const begin = (index) => {
       if (queues[index + 1]) {
         return begin(index + 1);
       } else {
-        resolve();
       }
       resolve();
     } catch (error) {
@@ -72,7 +76,6 @@ const begin = (index) => {
       if (queues[index + 1]) {
         return begin(index + 1);
       } else {
-        resolve();
       }
       resolve();
     }

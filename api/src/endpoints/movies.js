@@ -18,11 +18,6 @@ router.get("/", async (request, response) => {
 router.get("/refresh", async (request, response) => {
   try {
     const data = await refreshList("movies");
-    await Promise.all(
-      data.map((movie) => {
-        return saveMovieInDb(movie);
-      })
-    );
     response.send({ data });
   } catch (error) {
     console.error(error);
