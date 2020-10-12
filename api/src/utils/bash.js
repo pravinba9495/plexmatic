@@ -1,5 +1,21 @@
-const { exec, execSync, spawn } = require("child_process");
+const { exec, execSync } = require("child_process");
 const process = require('process');
+const {emit} = require('./socket');
+
+const kill = () => {
+  return new Promise((resolve, reject) => {
+    let ps = exec(`pkill ffmpeg`);
+    ps.on('close', (code, signal) => {
+      console.log(`Code: ${code}`);
+      console.log(`Signal: ${signal}`);
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`Non zero exit code, Code: ${code}, Signal: ${signal}`));
+      }
+    });
+  })
+}
 
 const ffprobe = (path) => {
   const { streams } = JSON.parse(
@@ -23,21 +39,23 @@ const ffmpeg = (path, params, output) => {
     ps.stdout.pipe(process.stdout);
     ps.stderr.pipe(process.stdout);
     process.on('SIGINT', () => {
-      ps.kill();
+      kill();
     });
     process.on('exit', () => {
-      ps.kill();
+      kill();
     });
     process.on('SIGABRT', () => {
-      ps.kill();
+      kill();
     });
     ps.on('close', (code, signal) => {
       console.log(`Code: ${code}`);
       console.log(`Signal: ${signal}`);
       if (code === 0) {
+        emit('closed');
         resolve();
       } else {
-        reject(new Error('Non zero exit code'));
+        emit('closed');
+        reject(new Error(`Non zero exit code, Code: ${code}, Signal: ${signal}`));
       }
     });
   });
@@ -54,4 +72,5 @@ module.exports = {
   rename,
   ffprobe,
   ffmpeg,
+  kill,
 };
