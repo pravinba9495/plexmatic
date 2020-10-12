@@ -49,7 +49,7 @@ const mediaProcessor = (media) => {
         (stream) => stream.codec_type === "video"
       );
       console.assert(
-        filteredVideoStreams.length === 1,
+        filteredVideoStreams.length > 0,
         "There should be at least one video stream: " + filename
       );
 
@@ -70,12 +70,12 @@ const mediaProcessor = (media) => {
       );
 
       if (
-        filteredVideoStreams.length === 1 &&
+        filteredVideoStreams.length > 0 &&
         filteredAudioStreams.length > 0
       ) {
         // Step 2: Check codecs for both video & audio
 
-        if (filteredVideoStreams[0].codec_name !== profile.video.codec) {
+        if ((filteredVideoStreams[0].codec_name !== profile.video.codec) && (profile.video.codec !== 'copy')) {
           // Transcode video stream
           params.input.push(`-map 0:${filteredVideoStreams[0].index}`);
           params.output.push(
