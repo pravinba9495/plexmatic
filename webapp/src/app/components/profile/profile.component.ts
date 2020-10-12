@@ -37,6 +37,10 @@ export class ProfileComponent implements OnInit {
       recommendedStereoValue * 0.5 * this.profile.audio.channels;
   }
 
+  public isPresentInWantedLanguages(code: string) {
+    return this.profile.language.wanted.includes(code);
+  }
+
   public async save() {
     if (this.mode === "add") {
       try {

@@ -8,7 +8,7 @@ export class Profile {
     codec: string;
     quality: string;
   } = {
-    codec: "h264",
+    codec: "copy",
     quality: "medium",
   };
   public audio: {
