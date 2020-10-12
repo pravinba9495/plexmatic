@@ -22,6 +22,7 @@ export class MoviesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.queueService.resetQueues();
+    this.moviesService.getMovies();
   }
 
   public async refreshList() {

@@ -19,7 +19,9 @@ export class ProfilesComponent implements OnInit {
     public profileService: ProfileService
   ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    this.profileService.getProfiles();
+  }
 
   public refreshList() {
     this.profileService.getProfiles();
