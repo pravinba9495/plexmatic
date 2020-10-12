@@ -43,7 +43,7 @@ router.get("/stop", (request, response) => {
 router.post("/remove", (request, response) => {
   const { filename } = request.body;
   if (filename) {
-    queues.splice(queues.map(q => q.filename).indexOf(filename), 1);
+    queues.splice(queues.map((q) => q.filename).indexOf(filename), 1);
   }
   response.send({ data: "OK" });
 });

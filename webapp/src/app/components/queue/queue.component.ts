@@ -9,12 +9,23 @@ import { QueueService } from "src/app/services/queue.service";
 export class QueueComponent implements OnInit, OnDestroy {
   private timer;
 
-  constructor(
-    public queueService: QueueService,
-  ) { }
+  constructor(public queueService: QueueService) {}
 
   ngOnInit() {
-    this.queueService.getQueues();
+    this.cronGetQueueList();
+  }
+
+  async cronGetQueueList() {
+    try {
+      await this.queueService.getQueues();
+      this.timer = setTimeout(() => {
+        this.cronGetQueueList();
+      }, 1000);
+    } catch (error) {
+      this.timer = setTimeout(() => {
+        this.cronGetQueueList();
+      }, 1000);
+    }
   }
 
   get canShowStartButton() {

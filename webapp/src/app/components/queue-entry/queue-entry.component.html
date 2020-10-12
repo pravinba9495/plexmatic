@@ -10,9 +10,9 @@
       "
     >
       <div>
-        <mat-checkbox [disabled]="item.started" color="primary"
-          >{{ item.filename }}</mat-checkbox
-        >
+        <mat-checkbox [disabled]="item.started" color="primary">{{
+          item.filename
+        }}</mat-checkbox>
       </div>
       <div>
         <button
@@ -31,16 +31,20 @@
           matTooltipPosition="left"
           [matTooltip]="'Finished'"
         >
-          <mat-icon style="font-size: 25px; color: green;" inline="true">check</mat-icon>
+          <mat-icon style="font-size: 25px; color: green" inline="true"
+            >check</mat-icon
+          >
         </div>
         <div
-        *ngIf="item.started && item.finished && item.status.includes('Error')"
-        mat-icon-button
-        matTooltipPosition="left"
-        [matTooltip]="'Finished'"
-      >
-        <mat-icon style="font-size: 25px; color: red;" inline="true">error</mat-icon>
-      </div>
+          *ngIf="item.started && item.finished && item.status.includes('Error')"
+          mat-icon-button
+          matTooltipPosition="left"
+          [matTooltip]="'Finished'"
+        >
+          <mat-icon style="font-size: 25px; color: red" inline="true"
+            >error</mat-icon
+          >
+        </div>
         <button
           *ngIf="!item.started"
           mat-icon-button
@@ -54,15 +58,37 @@
     </div>
     <div class="mt-2">
       <div class="mat-small">
-        {{item.status}}
+        {{ item.status }}
       </div>
       <div class="mt-1">
-        <mat-progress-bar
-        [style.visibility]="
-          item.started && !item.finished ? 'visible' : 'hidden'
-        "
-        [mode]="'indeterminate'"
-      ></mat-progress-bar>
+        <div
+          [style.visibility]="
+            item.started && !item.finished ? 'visible' : 'hidden'
+          "
+          class="progress"
+        >
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated"
+            role="progressbar"
+            style="width: 100%; background-color: #3f51b5"
+          >
+            Processing
+          </div>
+        </div>
+        <div
+          [style.visibility]="
+            !item.started && !item.finished ? 'visible' : 'hidden'
+          "
+          class="progress"
+        >
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style="width: 100%; background-color: transparent; color: black"
+          >
+            Not Started
+          </div>
+        </div>
       </div>
     </div>
   </mat-card-content>

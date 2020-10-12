@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from "@angular/material/table";
 import { Profile } from "src/app/models/profile";
 import { ProfileService } from "src/app/services/profile.service";
 import { ProfileComponent } from "../profile/profile.component";
@@ -11,15 +11,21 @@ import { ProfileComponent } from "../profile/profile.component";
   styles: [],
 })
 export class ProfilesComponent implements OnInit {
-
-  public displayedColumns = ['name', 'container', 'video_codec', 'audio_passthrough', 'audio_codec', 'languages'];
+  public displayedColumns = [
+    "name",
+    "container",
+    "video_codec",
+    "audio_passthrough",
+    "audio_codec",
+    "languages",
+  ];
 
   constructor(
     public dialog: MatDialog,
     public profileService: ProfileService
   ) {}
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     this.profileService.getProfiles();
   }
 

@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "~10.0.14",
     "@angular/router": "~10.0.14",
     "@types/socket.io-client": "^1.4.34",
+    "bootstrap": "^4.5.2",
     "chance": "^1.1.7",
     "rxjs": "~6.5.5",
     "socket.io-client": "^2.3.1",

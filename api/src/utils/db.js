@@ -188,9 +188,16 @@ const saveProfileInDb = (profile) => {
 const saveMoviesInDb = (movies) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
-      let stmt = db.prepare(`INSERT INTO movies (file, type, path, children) VALUES (?,?,?,?)`);
+      let stmt = db.prepare(
+        `INSERT INTO movies (file, type, path, children) VALUES (?,?,?,?)`
+      );
       for (let movie of movies) {
-        stmt.run(movie.file, movie.type, movie.path, JSON.stringify(movie.children));
+        stmt.run(
+          movie.file,
+          movie.type,
+          movie.path,
+          JSON.stringify(movie.children)
+        );
       }
       stmt.finalize((error) => {
         if (error) {
@@ -205,7 +212,9 @@ const saveMoviesInDb = (movies) => {
 const saveTvShowsInDb = (tvShows) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
-      let stmt = db.prepare(`INSERT INTO tv (file, type, path, children) VALUES (?,?,?,?)`);
+      let stmt = db.prepare(
+        `INSERT INTO tv (file, type, path, children) VALUES (?,?,?,?)`
+      );
       for (let tv of tvShows) {
         stmt.run(tv.file, tv.type, tv.path, JSON.stringify(tv.children));
       }

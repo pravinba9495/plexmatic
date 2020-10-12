@@ -9,7 +9,7 @@ export class MoviesService {
   private _items: any[] = [];
   public progress = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   get items(): any[] {
     return this._items;
