@@ -13,13 +13,13 @@
     </div>
   </ng-container>
   <ng-container *ngIf="item.children.length > 0">
-    <div>
+    <div style="cursor: pointer; user-select: none;" (click)="toggleExpand()">
       <mat-label><mat-icon inline="true">folder</mat-icon>&nbsp;{{ item.file }}</mat-label>
       &nbsp;
-      <button *ngIf="!expand" (click)="toggleExpand()" mat-icon-button>
+      <button *ngIf="!expand" mat-icon-button>
         <mat-icon>expand_more</mat-icon>
       </button>
-      <button *ngIf="expand" (click)="toggleExpand()"  mat-icon-button>
+      <button *ngIf="expand" mat-icon-button>
         <mat-icon>expand_less</mat-icon>
       </button>
     </div>

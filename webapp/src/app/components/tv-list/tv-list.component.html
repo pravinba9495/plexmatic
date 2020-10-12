@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="p-2">
     <div
       class="m-2"
@@ -40,12 +40,8 @@
       >
       <span *ngIf="!tvService.items.length">No TV shows found</span>
     </div>
-    <div class="m-2" *ngFor="let item of tvService.items">
-      <mat-card>
-        <mat-card-content>
-          <app-tv-entry [item]="item"></app-tv-entry>
-        </mat-card-content>
-      </mat-card>
+    <div class="m-2 p-4 border bg-white">
+      <app-tv-entry *ngFor="let item of tvService.items" [item]="item"></app-tv-entry>
     </div>
   </div>
 </div>
