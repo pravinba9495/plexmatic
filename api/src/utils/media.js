@@ -118,7 +118,7 @@ const mediaProcessor = (media) => {
               params.output.push(
                 `-c:${params.input.length - 1} ${profile.audio.codec} -ac:${
                   params.input.length - 1
-                } ${profile.audio.channels} -metadata:s:${
+                } ${profile.audio.channels} -b:${params.input.length - 1} ${profile.audio.quality}k -metadata:s:${
                   params.input.length - 1
                 } title="Audio Track (${
                   profile.language.primary
