@@ -1,40 +1,42 @@
-<div class="p-2">
-  <div
-    class="mt-1 p-2"
-    style="
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    "
-  >
-    <div>
-      <span *ngIf="queueService.items.length"
-        >{{ queueService.items.length }} remaining item(s) in the queue</span
-      >
-      <span *ngIf="!queueService.items.length">No items in the queue</span>
+<div class="container">
+  <div class="p-2">
+    <div
+      class="mt-1 p-2"
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      "
+    >
+      <div>
+        <span *ngIf="queueService.items.length"
+          >{{ queueService.items.length }} remaining item(s) in the queue</span
+        >
+        <span *ngIf="!queueService.items.length">No items in the queue</span>
+      </div>
+      <div>
+        <button
+          *ngIf="queueService.items.length > 0 && canShowStartButton"
+          mat-raised-button
+          color="primary"
+          (click)="queueService.start()"
+        >
+          Start
+        </button>
+        &nbsp;
+        <button
+          *ngIf="queueService.items.length > 0 && canShowClearButton"
+          mat-raised-button
+          color="warn"
+          (click)="queueService.clear()"
+        >
+          Clear
+        </button>
+      </div>
     </div>
-    <div>
-      <button
-        *ngIf="queueService.items.length > 0 && canShowStartButton"
-        mat-raised-button
-        color="primary"
-        (click)="queueService.start()"
-      >
-        START
-      </button>
-      &nbsp;
-      <button
-        *ngIf="queueService.items.length > 0 && canShowClearButton"
-        mat-raised-button
-        color="warn"
-        (click)="queueService.clear()"
-      >
-        CLEAR
-      </button>
+    <div class="m-2" *ngFor="let item of queueService.items">
+      <app-queue-entry [item]="item"></app-queue-entry>
     </div>
-  </div>
-  <div class="m-2" *ngFor="let item of queueService.items">
-    <app-queue-entry [item]="item"></app-queue-entry>
   </div>
 </div>

@@ -1,4 +1,5 @@
 export class QueueItem {
+  public id?: string;
   public filename: string;
   public profileId: number;
   public started?: boolean;
