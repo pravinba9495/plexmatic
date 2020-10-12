@@ -13,7 +13,7 @@ const mediaProcessor = (media) => {
           path.extname(filename)
         )
       ) {
-        reject(new Error('Invalid extension for the media file'));
+        reject(new Error("Invalid extension for the media file"));
         return;
       }
       const streams = ffprobe(filename).streams.map((stream) => {
@@ -41,7 +41,7 @@ const mediaProcessor = (media) => {
 
       const params = {
         input: [],
-        output: []
+        output: [],
       };
 
       // Step 1: Filter streams by wanted languages
@@ -64,21 +64,39 @@ const mediaProcessor = (media) => {
       );
 
       let filteredSubtitleStreams = streams.filter(
-        (stream) => stream.codec_type === "subtitle" &&
-        profile.language.wanted.includes(stream.language)
+        (stream) =>
+          stream.codec_type === "subtitle" &&
+          profile.language.wanted.includes(stream.language)
       );
 
-      if (filteredVideoStreams.length === 1 && filteredAudioStreams.length > 0) {
+      if (
+        filteredVideoStreams.length === 1 &&
+        filteredAudioStreams.length > 0
+      ) {
         // Step 2: Check codecs for both video & audio
 
         if (filteredVideoStreams[0].codec_name !== profile.video.codec) {
           // Transcode video stream
           params.input.push(`-map 0:${filteredVideoStreams[0].index}`);
-          params.output.push(`-c:${params.input.length - 1} ${profile.video.codec === 'h264' ? 'libx264' : 'libx265'} -preset ${profile.video.quality} -metadata:s:${params.input.length - 1} title="Video Track" -disposition:${params.input.length - 1} default`);
+          params.output.push(
+            `-c:${params.input.length - 1} ${
+              profile.video.codec === "h264" ? "libx264" : "libx265"
+            } -preset ${profile.video.quality} -metadata:s:${
+              params.input.length - 1
+            } title="Video Track" -disposition:${
+              params.input.length - 1
+            } default`
+          );
         } else {
           // Copy video stream
           params.input.push(`-map 0:${filteredVideoStreams[0].index}`);
-          params.output.push(`-c:${params.input.length - 1} copy -metadata:s:${params.input.length - 1} title="Video Track" -disposition:${params.input.length - 1} default`);
+          params.output.push(
+            `-c:${params.input.length - 1} copy -metadata:s:${
+              params.input.length - 1
+            } title="Video Track" -disposition:${
+              params.input.length - 1
+            } default`
+          );
         }
 
         for (let stream of filteredAudioStreams) {
@@ -87,11 +105,25 @@ const mediaProcessor = (media) => {
             if (profile.audio.passthrough.includes(stream.codec_name)) {
               // Passthrough codec
               params.input.push(`-map 0:${stream.index}`);
-              params.output.push(`-c:${params.input.length - 1} copy -metadata:s:${params.input.length - 1} title="Audio Track (${profile.language.primary})" -disposition:${params.input.length - 1} default`);
+              params.output.push(
+                `-c:${params.input.length - 1} copy -metadata:s:${
+                  params.input.length - 1
+                } title="Audio Track (${
+                  profile.language.primary
+                })" -disposition:${params.input.length - 1} default`
+              );
             } else {
               // Transcode codec
               params.input.push(`-map 0:${stream.index}`);
-              params.output.push(`-c:${params.input.length - 1} ${profile.audio.codec} -ac:${params.input.length - 1} ${profile.audio.channels} -metadata:s:${params.input.length - 1} title="Audio Track (${profile.language.primary})" -disposition:${params.input.length - 1} default`);
+              params.output.push(
+                `-c:${params.input.length - 1} ${profile.audio.codec} -ac:${
+                  params.input.length - 1
+                } ${profile.audio.channels} -metadata:s:${
+                  params.input.length - 1
+                } title="Audio Track (${
+                  profile.language.primary
+                })" -disposition:${params.input.length - 1} default`
+              );
             }
             break;
           }
@@ -101,7 +133,13 @@ const mediaProcessor = (media) => {
           if (profile.language.primary !== stream.language) {
             //Other languages
             params.input.push(`-map 0:${stream.index}`);
-            params.output.push(`-c:${params.input.length - 1} copy -metadata:s:${params.input.length - 1} title="Audio Track (${stream.language})" -disposition:${params.input.length - 1} none`);
+            params.output.push(
+              `-c:${params.input.length - 1} copy -metadata:s:${
+                params.input.length - 1
+              } title="Audio Track (${stream.language})" -disposition:${
+                params.input.length - 1
+              } none`
+            );
           }
         }
 
@@ -111,13 +149,22 @@ const mediaProcessor = (media) => {
           params.output.push(`-c:${params.input.length - 1} copy`);
         }
 
-        const splittedPath = filename.split('/');
-        const fName = splittedPath[splittedPath.length - 1].replace(path.extname(filename), `.${profile.container}`);
-        await ffmpeg(filename, params.input.concat(params.output).join(' '), `/output/${fName}`);
+        const splittedPath = filename.split("/");
+        const fName = splittedPath[splittedPath.length - 1].replace(
+          path.extname(filename),
+          `.${profile.container}`
+        );
+        await ffmpeg(
+          filename,
+          params.input.concat(params.output).join(" "),
+          `/output/${fName}`
+        );
         resolve();
       } else {
         console.log(streams);
-        reject(new Error(`Matching languages not found. Process this file manually.`));
+        reject(
+          new Error(`Matching languages not found. Process this file manually.`)
+        );
         return;
       }
     } catch (error) {

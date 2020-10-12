@@ -4,6 +4,7 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { JobComponent } from "src/app/components/job/job.component";
 import { MoviesService } from "src/app/services/movies.service";
+import { ProfileService } from "src/app/services/profile.service";
 import { QueueService } from "src/app/services/queue.service";
 
 @Component({
@@ -17,11 +18,13 @@ export class MoviesListComponent implements OnInit {
     public snackbar: MatSnackBar,
     public queueService: QueueService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
     this.queueService.resetQueues();
+    this.profileService.getProfiles();
     this.moviesService.getMovies();
   }
 

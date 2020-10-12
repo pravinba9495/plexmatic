@@ -72,7 +72,12 @@ small,
   font-size: 10px;
 }
 
-a {
+a,
+a:hover {
   text-decoration: none;
   color: white;
+}
+
+button {
+  outline: none !important;
 }

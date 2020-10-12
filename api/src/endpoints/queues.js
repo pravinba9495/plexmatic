@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { kill } = require("../utils/bash");
 const { mediaProcessor } = require("../utils/media");
+const {v4} = require('uuid');
 
 let queues = [];
 
@@ -43,13 +44,19 @@ router.get("/stop", (request, response) => {
 router.post("/remove", (request, response) => {
   const { filename } = request.body;
   if (filename) {
-    queues.splice(queues.map(q => q.filename).indexOf(filename), 1);
+    queues.splice(queues.map((q) => q.filename).indexOf(filename), 1);
   }
   response.send({ data: "OK" });
 });
 
 router.post("/", (request, response) => {
-  queues = queues.concat(request.body);
+  const newQueues = request.body.map((q) => {
+    return {
+      ...q,
+      id: v4()
+    }
+  })
+  queues = queues.concat(newQueues);
   response.send({ data: queues });
 });
 

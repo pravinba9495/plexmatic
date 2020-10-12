@@ -185,41 +185,46 @@ const saveProfileInDb = (profile) => {
   });
 };
 
-const saveMovieInDb = (movie) => {
+const saveMoviesInDb = (movies) => {
   return new Promise((resolve, reject) => {
-    db.run(
-      `INSERT INTO movies
-			(file, type, path, children)
-			VALUES (?,?,?,?)
-			`,
-      [movie.file, movie.type, movie.path, JSON.stringify(movie.children)],
-      (error) => {
-        console.log(error);
+    db.serialize(() => {
+      let stmt = db.prepare(
+        `INSERT INTO movies (file, type, path, children) VALUES (?,?,?,?)`
+      );
+      for (let movie of movies) {
+        stmt.run(
+          movie.file,
+          movie.type,
+          movie.path,
+          JSON.stringify(movie.children)
+        );
+      }
+      stmt.finalize((error) => {
         if (error) {
           reject(error);
         }
         resolve();
-      }
-    );
+      });
+    });
   });
 };
 
-const saveTvShowInDb = (tv) => {
+const saveTvShowsInDb = (tvShows) => {
   return new Promise((resolve, reject) => {
-    db.run(
-      `INSERT INTO tv
-			(file, type, path, children)
-			VALUES (?,?,?,?)
-			`,
-      [tv.file, tv.type, tv.path, JSON.stringify(tv.children)],
-      (error) => {
-        console.log(error);
+    db.serialize(() => {
+      let stmt = db.prepare(
+        `INSERT INTO tv (file, type, path, children) VALUES (?,?,?,?)`
+      );
+      for (let tv of tvShows) {
+        stmt.run(tv.file, tv.type, tv.path, JSON.stringify(tv.children));
+      }
+      stmt.finalize((error) => {
         if (error) {
           reject(error);
         }
         resolve();
-      }
-    );
+      });
+    });
   });
 };
 
@@ -293,8 +298,8 @@ module.exports = {
   getMoviesListFromDb,
   getProfilebyIdFromDb,
   getTvShowsListFromDb,
-  saveMovieInDb,
-  saveTvShowInDb,
+  saveMoviesInDb,
+  saveTvShowsInDb,
   refreshData,
   refreshList,
 };

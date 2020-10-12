@@ -1,49 +1,51 @@
-<div class="p-2">
-  <div
-    class="m-2"
-    align="center"
-    style="
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-    "
-  >
-    <div class="m-1">
-      <button
-        color="primary"
-        *ngIf="queueService.queues.length > 0"
-        (click)="addJob()"
-        [disabled]="tvService.progress"
-        mat-raised-button
-      >
-        <mat-icon>add_circle_outline</mat-icon>
-        &nbsp; ADD TO QUEUE
-      </button>
-    </div>
-    <div class="m-1">
-      <button
-        color="warn"
-        [disabled]="tvService.progress"
-        mat-raised-button
-        (click)="refreshList()"
-      >
-        <mat-icon>repeat</mat-icon>
-        &nbsp; REFRESH
-      </button>
-    </div>
-  </div>
-  <div class="m-2 p-1" align="center">
-    <span *ngIf="tvService.items.length"
-      >{{ tvService.items.length }} TV shows found</span
+<div class="container">
+  <div class="p-2">
+    <div
+      class="m-2"
+      align="center"
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      "
     >
-    <span *ngIf="!tvService.items.length">No TV shows found</span>
-  </div>
-  <div class="m-2" *ngFor="let item of tvService.items">
-    <mat-card>
-      <mat-card-content>
-        <app-tv-entry [item]="item"></app-tv-entry>
-      </mat-card-content>
-    </mat-card>
+      <div class="m-1">
+        <button
+          color="primary"
+          *ngIf="queueService.queues.length > 0"
+          (click)="addJob()"
+          [disabled]="tvService.progress"
+          mat-raised-button
+        >
+          <mat-icon>add_circle_outline</mat-icon>
+          &nbsp; ADD TO QUEUE
+        </button>
+      </div>
+      <div class="m-1">
+        <button
+          color="warn"
+          [disabled]="tvService.progress"
+          mat-raised-button
+          (click)="refreshList()"
+        >
+          <mat-icon>repeat</mat-icon>
+          &nbsp; Refresh
+        </button>
+      </div>
+    </div>
+    <div class="m-2 p-1" align="center">
+      <span *ngIf="tvService.items.length"
+        >{{ tvService.items.length }} TV shows found</span
+      >
+      <span *ngIf="!tvService.items.length">No TV shows found</span>
+    </div>
+    <div class="m-2" *ngFor="let item of tvService.items">
+      <mat-card>
+        <mat-card-content>
+          <app-tv-entry [item]="item"></app-tv-entry>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

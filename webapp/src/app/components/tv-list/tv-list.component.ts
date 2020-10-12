@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { JobComponent } from "src/app/components/job/job.component";
+import { ProfileService } from "src/app/services/profile.service";
 import { QueueService } from "src/app/services/queue.service";
 import { TvService } from "src/app/services/tv.service";
 
@@ -17,11 +18,13 @@ export class TvListComponent implements OnInit {
     public snackbar: MatSnackBar,
     public queueService: QueueService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit(): void {
     this.queueService.resetQueues();
+    this.profileService.getProfiles();
     this.tvService.getTvShows();
   }
 

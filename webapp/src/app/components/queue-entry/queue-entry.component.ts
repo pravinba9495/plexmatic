@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { QueueItem } from "src/app/models/queue-item";
 import { ProfileService } from "src/app/services/profile.service";
-import { QueueService } from 'src/app/services/queue.service';
+import { QueueService } from "src/app/services/queue.service";
 
 @Component({
   selector: "app-queue-entry",
@@ -12,10 +12,22 @@ export class QueueEntryComponent implements OnInit {
   @Input()
   item: QueueItem;
 
+  public stopInProgress = false;
+
   constructor(
     public profileService: ProfileService,
-    public queueService: QueueService,
-  ) { }
+    public queueService: QueueService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("New render");
+  }
+
+  stop() {
+    this.stopInProgress = true;
+    console.log(this.stopInProgress);
+    let timer = setTimeout(() => {
+      this.queueService.stop();
+    }, 1000);
+  }
 }

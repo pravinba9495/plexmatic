@@ -1,7 +1,7 @@
 const {
   getMoviesListFromDb,
   refreshList,
-  saveMovieInDb,
+  saveMoviesInDb,
 } = require("../utils/db");
 const router = require("express").Router();
 
@@ -18,6 +18,7 @@ router.get("/", async (request, response) => {
 router.get("/refresh", async (request, response) => {
   try {
     const data = await refreshList("movies");
+    await saveMoviesInDb(data);
     response.send({ data });
   } catch (error) {
     console.error(error);

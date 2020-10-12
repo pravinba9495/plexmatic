@@ -1,105 +1,79 @@
-<div class="p-2">
-  <div
-    style="
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-    "
-  >
-    <div class="p-2">
-      <button color="primary" mat-raised-button (click)="openProfileModal()">
-        <mat-icon>add_circle</mat-icon>
-        &nbsp; ADD
-      </button>
-    </div>
-    <div class="p-2">
-      <button color="warn" mat-raised-button (click)="refreshList()">
-        <mat-icon>repeat</mat-icon>
-        &nbsp; REFRESH
-      </button>
+<div class="container">
+  <div class="p-2">
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div class="p-2">
+        <button color="primary" mat-raised-button (click)="openProfileModal()">
+          <mat-icon>add_circle</mat-icon>
+          &nbsp; ADD
+        </button>
+      </div>
+      <div class="p-2">
+        <button color="warn" mat-raised-button (click)="refreshList()">
+          <mat-icon>repeat</mat-icon>
+          &nbsp; Refresh
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- <div class="p-2">
-  <div class="m-1 p-1" *ngFor="let item of profileService.items">
-    <mat-card style="cursor: pointer" (click)="openProfileModal(item)">
-      <mat-card-title>
-        <h4>
-          <mat-icon inline="true">extension</mat-icon>&nbsp;{{ item.name }}
-        </h4>
-      </mat-card-title>
-      <mat-card-content>
-        <mat-chip-list>
-          <mat-chip style="text-transform: uppercase">{{
-            item.container
-          }}</mat-chip>
-          <mat-chip style="text-transform: uppercase">{{
-            item.video.codec
-          }}</mat-chip>
-          <mat-chip
-            selected
-            color="warn"
-            style="text-transform: uppercase"
-            [matTooltip]="'Passthru'"
-            *ngFor="let audio of item.audio.passthrough"
-            >{{ audio }}</mat-chip
-          >
-          <mat-chip
-            style="text-transform: uppercase"
-            [matTooltip]="'Transcode'"
-            >{{ item.audio.codec }}</mat-chip
-          >
-          <mat-chip style="text-transform: lowercase"
-            >{{ item.audio.quality }} kbps</mat-chip
-          >
-          <mat-chip
-            [matTooltip]="lang"
-            *ngFor="let lang of item.language.wanted"
-            >{{ lang }}</mat-chip
-          >
-        </mat-chip-list>
-      </mat-card-content>
-    </mat-card>
+  <div class="p-2">
+    <table
+      mat-table
+      class="mat-elevation-z1"
+      style="width: 100%"
+      [dataSource]="dataSource"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let profile">{{ profile.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="container">
+        <th mat-header-cell *matHeaderCellDef>Container</th>
+        <td mat-cell *matCellDef="let profile">{{ profile.container }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="video_codec">
+        <th mat-header-cell *matHeaderCellDef>Video Codec</th>
+        <td mat-cell *matCellDef="let profile">{{ profile.video.codec }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="audio_passthrough">
+        <th mat-header-cell *matHeaderCellDef>Audio Codec (Passthru)</th>
+        <td mat-cell *matCellDef="let profile">
+          {{ profile.audio.passthrough }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="audio_codec">
+        <th mat-header-cell *matHeaderCellDef>Audio Codec (Transcode)</th>
+        <td mat-cell *matCellDef="let profile">
+          {{ profile.audio.codec }} ({{ profile.audio.channels }} ch)
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="languages">
+        <th mat-header-cell *matHeaderCellDef>Languages (Wanted)</th>
+        <td mat-cell *matCellDef="let profile">
+          {{ profile.language.wanted }} (Primary:
+          {{ profile.language.primary }})
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        style="cursor: pointer"
+        (click)="openProfileModal(row)"
+        *matRowDef="let row; columns: displayedColumns"
+      ></tr>
+    </table>
   </div>
-</div> -->
-
-<div class="p-2">
-  <table mat-table class="mat-elevation-z1" style="width: 100%;" [dataSource]="dataSource">
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let profile"> {{profile.name}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="container">
-      <th mat-header-cell *matHeaderCellDef> Container </th>
-      <td mat-cell *matCellDef="let profile"> {{profile.container}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="video_codec">
-      <th mat-header-cell *matHeaderCellDef> Video Codec </th>
-      <td mat-cell *matCellDef="let profile"> {{profile.video.codec}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="audio_passthrough">
-      <th mat-header-cell *matHeaderCellDef> Audio Codec (Passthru) </th>
-      <td mat-cell *matCellDef="let profile"> {{profile.audio.passthrough}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="audio_codec">
-      <th mat-header-cell *matHeaderCellDef> Audio Codec (Transcode)</th>
-      <td mat-cell *matCellDef="let profile"> {{profile.audio.codec}} ({{profile.audio.channels}} ch)</td>
-    </ng-container>
-
-    <ng-container matColumnDef="languages">
-      <th mat-header-cell *matHeaderCellDef> Languages (Wanted)</th>
-      <td mat-cell *matCellDef="let profile"> {{profile.language.wanted}} (Primary: {{profile.language.primary}})</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row style="cursor: pointer;" (click)="openProfileModal(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
-
-  </table>
 </div>

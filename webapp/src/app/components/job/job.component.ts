@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialogRef } from "@angular/material/dialog";
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { ProfileService } from "src/app/services/profile.service";
 import { QueueService } from "src/app/services/queue.service";
 
@@ -16,7 +16,7 @@ export class JobComponent implements OnInit {
     public dialog: MatDialogRef<JobComponent>,
     public profileService: ProfileService,
     public queueService: QueueService,
-    public snackbar: MatSnackBar,
+    public snackbar: MatSnackBar
   ) {}
 
   ngOnInit(): void {}
@@ -34,7 +34,7 @@ export class JobComponent implements OnInit {
       this.dialog.close(true);
     } catch (error) {
       console.error(error);
-      this.snackbar.open(error.message, '', {duration: 5000});
+      this.snackbar.open(error.message, "", { duration: 5000 });
     }
   }
 }
