@@ -187,18 +187,14 @@ const saveMoviesInDb = (movies, parentId) => {
         `INSERT INTO movies (file, type, path, parentId) VALUES (?,?,?,?)`
       );
       for (let movie of movies) {
-        stmt.run(
-          movie.file,
-          movie.type,
-          movie.path,
-          parentId,
-          function (error) {
-            if (error) {
-              reject(error);
-            }
-            insertedIds.push(this.lastID);
+        stmt.run(movie.file, movie.type, movie.path, parentId, function (
+          error
+        ) {
+          if (error) {
+            reject(error);
           }
-        );
+          insertedIds.push(this.lastID);
+        });
       }
       stmt.finalize(async (error) => {
         if (error) {
@@ -212,7 +208,7 @@ const saveMoviesInDb = (movies, parentId) => {
               return Promise.resolve();
             }
           })
-        )
+        );
         resolve();
       });
     });
@@ -230,18 +226,12 @@ const saveTvShowsInDb = (tvShows, parentId) => {
         `INSERT INTO tv (file, type, path, parentId) VALUES (?,?,?,?)`
       );
       for (let tv of tvShows) {
-        stmt.run(
-          tv.file,
-          tv.type,
-          tv.path,
-          parentId,
-          function (error) {
-            if (error) {
-              reject(error);
-            }
-            insertedIds.push(this.lastID);
+        stmt.run(tv.file, tv.type, tv.path, parentId, function (error) {
+          if (error) {
+            reject(error);
           }
-        );
+          insertedIds.push(this.lastID);
+        });
       }
       stmt.finalize(async (error) => {
         if (error) {
@@ -255,7 +245,7 @@ const saveTvShowsInDb = (tvShows, parentId) => {
               return Promise.resolve();
             }
           })
-        )
+        );
         resolve();
       });
     });

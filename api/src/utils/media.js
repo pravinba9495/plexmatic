@@ -69,13 +69,13 @@ const mediaProcessor = (media) => {
           profile.language.wanted.includes(stream.language)
       );
 
-      if (
-        filteredVideoStreams.length > 0 &&
-        filteredAudioStreams.length > 0
-      ) {
+      if (filteredVideoStreams.length > 0 && filteredAudioStreams.length > 0) {
         // Step 2: Check codecs for both video & audio
 
-        if ((filteredVideoStreams[0].codec_name !== profile.video.codec) && (profile.video.codec !== 'copy')) {
+        if (
+          filteredVideoStreams[0].codec_name !== profile.video.codec &&
+          profile.video.codec !== "copy"
+        ) {
           // Transcode video stream
           params.input.push(`-map 0:${filteredVideoStreams[0].index}`);
           params.output.push(
@@ -118,9 +118,9 @@ const mediaProcessor = (media) => {
               params.output.push(
                 `-c:${params.input.length - 1} ${profile.audio.codec} -ac:${
                   params.input.length - 1
-                } ${profile.audio.channels} -b:${params.input.length - 1} ${profile.audio.quality}k -metadata:s:${
-                  params.input.length - 1
-                } title="Audio Track (${
+                } ${profile.audio.channels} -b:${params.input.length - 1} ${
+                  profile.audio.quality
+                }k -metadata:s:${params.input.length - 1} title="Audio Track (${
                   profile.language.primary
                 })" -disposition:${params.input.length - 1} default`
               );

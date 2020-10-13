@@ -62,7 +62,7 @@ export class QueueService {
   }
 
   existsInQueue(path: string) {
-    return this.items.map(item => item.filename).includes(path);
+    return this.items.map((item) => item.filename).includes(path);
   }
 
   resetQueues() {

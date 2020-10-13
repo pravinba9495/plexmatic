@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { kill } = require("../utils/bash");
 const { mediaProcessor } = require("../utils/media");
-const {v4} = require('uuid');
+const { v4 } = require("uuid");
 
 let queues = [];
 
@@ -53,9 +53,9 @@ router.post("/", (request, response) => {
   const newQueues = request.body.map((q) => {
     return {
       ...q,
-      id: v4()
-    }
-  })
+      id: v4(),
+    };
+  });
   queues = queues.concat(newQueues);
   response.send({ data: queues });
 });

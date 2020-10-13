@@ -38,7 +38,10 @@
       </div>
     </div>
     <div class="mt-2 border bg-white">
-      <div style="border-bottom: solid thin #e5e5e5;" *ngFor="let item of queueService.items">
+      <div
+        style="border-bottom: solid thin #e5e5e5"
+        *ngFor="let item of queueService.items"
+      >
         <app-queue-entry [item]="item"></app-queue-entry>
       </div>
     </div>

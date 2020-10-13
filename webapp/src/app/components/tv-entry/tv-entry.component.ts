@@ -14,10 +14,9 @@ export class TvEntryComponent implements OnInit {
 
   constructor(public queueService: QueueService) {}
 
-  ngOnInit(): void { }
-  
+  ngOnInit(): void {}
+
   toggleExpand() {
     this.expand = !this.expand;
   }
-  
 }
