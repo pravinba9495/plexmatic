@@ -196,10 +196,9 @@ const saveMoviesInDb = (movies, parentId) => {
             if (error) {
               reject(error);
             }
-            console.log(this.lastID);
             insertedIds.push(this.lastID);
           }
-        )
+        );
       }
       stmt.finalize(async (error) => {
         if (error) {
@@ -220,19 +219,43 @@ const saveMoviesInDb = (movies, parentId) => {
   });
 };
 
-const saveTvShowsInDb = (tvShows) => {
+const saveTvShowsInDb = (tvShows, parentId) => {
+  if (!parentId) {
+    parentId = 0;
+  }
+  const insertedIds = [];
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       let stmt = db.prepare(
         `INSERT INTO tv (file, type, path, parentId) VALUES (?,?,?,?)`
       );
       for (let tv of tvShows) {
-        stmt.run(tv.file, tv.type, tv.path, tv.parentId || 0);
+        stmt.run(
+          tv.file,
+          tv.type,
+          tv.path,
+          parentId,
+          function (error) {
+            if (error) {
+              reject(error);
+            }
+            insertedIds.push(this.lastID);
+          }
+        );
       }
-      stmt.finalize((error) => {
+      stmt.finalize(async (error) => {
         if (error) {
           reject(error);
         }
+        await Promise.all(
+          tvShows.map((tv, index) => {
+            if (tv.children.length > 0) {
+              return saveTvShowsInDb(tv.children, insertedIds[index]);
+            } else {
+              return Promise.resolve();
+            }
+          })
+        )
         resolve();
       });
     });
