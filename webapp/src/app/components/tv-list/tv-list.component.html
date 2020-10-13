@@ -41,7 +41,10 @@
       <span *ngIf="!tvService.items.length">No TV shows found</span>
     </div>
     <div class="m-2 p-4 border bg-white">
-      <app-tv-entry *ngFor="let item of tvService.items" [item]="item"></app-tv-entry>
+      <app-tv-entry
+        *ngFor="let item of tvService.items"
+        [item]="item"
+      ></app-tv-entry>
     </div>
   </div>
 </div>

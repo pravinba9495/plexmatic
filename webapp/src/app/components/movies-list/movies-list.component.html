@@ -41,7 +41,10 @@
       <span *ngIf="!moviesService.items.length">No movies found</span>
     </div>
     <div class="m-2 p-4 border bg-white">
-      <app-movie-entry *ngFor="let item of moviesService.items" [item]="item"></app-movie-entry>
+      <app-movie-entry
+        *ngFor="let item of moviesService.items"
+        [item]="item"
+      ></app-movie-entry>
     </div>
   </div>
 </div>
