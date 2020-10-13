@@ -23,6 +23,7 @@
         <mat-form-field>
           <mat-label>Container</mat-label>
           <mat-select [(ngModel)]="profile.container">
+            <mat-option value="copy">Same as source</mat-option>
             <mat-option value="mkv">MKV</mat-option>
             <mat-option value="mp4">MP4</mat-option>
           </mat-select>
@@ -32,12 +33,13 @@
         <mat-form-field>
           <mat-label>Video Codec</mat-label>
           <mat-select [(ngModel)]="profile.video.codec">
+            <mat-option value="copy">Same as source</mat-option>
             <mat-option value="h264">H.264</mat-option>
-            <mat-option value="h265">H.265</mat-option>
+            <mat-option value="hevc">HEVC/H.265</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="p-1">
+      <div *ngIf="profile.video.codec !== 'copy'" class="p-1">
         <mat-form-field>
           <mat-label>Preset</mat-label>
           <mat-select [(ngModel)]="profile.video.quality">
@@ -143,9 +145,11 @@
         <mat-form-field>
           <mat-label>Primary language</mat-label>
           <mat-select [(ngModel)]="profile.language.primary">
-            <mat-option *ngFor="let code of codes" [value]="code.value">{{
-              code.label
-            }}</mat-option>
+            <ng-container *ngFor="let code of codes">
+              <mat-option *ngIf="isPresentInWantedLanguages(code.value)" [value]="code.value">{{
+                code.label
+              }}</mat-option>
+            </ng-container>
           </mat-select>
         </mat-form-field>
       </div>

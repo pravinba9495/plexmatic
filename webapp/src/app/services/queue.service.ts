@@ -61,6 +61,10 @@ export class QueueService {
     });
   }
 
+  existsInQueue(path: string) {
+    return this.items.map(item => item.filename).includes(path);
+  }
+
   resetQueues() {
     this._tempQueue = [];
   }

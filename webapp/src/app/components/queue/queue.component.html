@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="p-2">
     <div
       class="mt-1 p-2"
@@ -17,26 +17,30 @@
       </div>
       <div>
         <button
-          *ngIf="queueService.items.length > 0 && canShowStartButton"
+          [disabled]="!(queueService.items.length > 0 && canShowStartButton)"
           mat-raised-button
           color="primary"
           (click)="queueService.start()"
+          [matTooltip]="'Start'"
         >
-          Start
+          <mat-icon>play_arrow</mat-icon>
         </button>
         &nbsp;
         <button
-          *ngIf="queueService.items.length > 0 && canShowClearButton"
+          [disabled]="!(queueService.items.length > 0 && canShowClearButton)"
           mat-raised-button
           color="warn"
           (click)="queueService.clear()"
+          [matTooltip]="'Clear'"
         >
-          Clear
+          <mat-icon>clear</mat-icon>
         </button>
       </div>
     </div>
-    <div class="m-2" *ngFor="let item of queueService.items">
-      <app-queue-entry [item]="item"></app-queue-entry>
+    <div class="mt-2 border bg-white">
+      <div style="border-bottom: solid thin #e5e5e5;" *ngFor="let item of queueService.items">
+        <app-queue-entry [item]="item"></app-queue-entry>
+      </div>
     </div>
   </div>
 </div>

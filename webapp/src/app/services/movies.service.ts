@@ -19,7 +19,7 @@ export class MoviesService {
     this.progress = true;
     this.http.get(environment.apiURL + "/movies").subscribe(
       (response: any) => {
-        this._items = response.data;
+        this._items = this.getNestedFolderStructure(response.data);
         this.progress = false;
       },
       (error) => {
@@ -27,6 +27,15 @@ export class MoviesService {
         this.progress = false;
       }
     );
+  }
+
+  getNestedFolderStructure(elements: any[], parentId = 0) {
+    return elements.filter(e => e.parentId === parentId).map((e) => {
+      return {
+        ...e,
+        children: this.getNestedFolderStructure(elements, e.id),
+      }
+    });
   }
 
   refreshList() {

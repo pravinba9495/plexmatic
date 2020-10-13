@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <div class="p-2">
     <div
       class="m-2"
@@ -19,13 +19,13 @@
           mat-raised-button
         >
           <mat-icon>add_circle_outline</mat-icon>
-          &nbsp; ADD TO QUEUE
+          &nbsp; Add to queue
         </button>
       </div>
       <div class="m-1">
         <button
           color="warn"
-          [disabled]="moviesService.progress"
+          [disabled]="moviesService.progress && false"
           mat-raised-button
           (click)="refreshList()"
         >
@@ -40,12 +40,8 @@
       >
       <span *ngIf="!moviesService.items.length">No movies found</span>
     </div>
-    <div class="m-2" *ngFor="let item of moviesService.items">
-      <mat-card>
-        <mat-card-content>
-          <app-movie-entry [item]="item"></app-movie-entry>
-        </mat-card-content>
-      </mat-card>
+    <div class="m-2 p-4 border bg-white">
+      <app-movie-entry *ngFor="let item of moviesService.items" [item]="item"></app-movie-entry>
     </div>
   </div>
 </div>

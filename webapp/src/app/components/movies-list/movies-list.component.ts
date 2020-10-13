@@ -24,6 +24,7 @@ export class MoviesListComponent implements OnInit {
 
   ngOnInit(): void {
     this.queueService.resetQueues();
+    this.queueService.getQueues();
     this.profileService.getProfiles();
     this.moviesService.getMovies();
   }

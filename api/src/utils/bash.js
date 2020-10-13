@@ -1,10 +1,10 @@
 const { exec, execSync } = require("child_process");
 const process = require("process");
 const { emit } = require("./socket");
-
+let pid = 0;
 const kill = () => {
   return new Promise((resolve, reject) => {
-    let ps = exec(`pkill ffmpeg`);
+    let ps = exec(`kill -15 ${pid}`);
     ps.on("close", (code, signal) => {
       console.log(`Code: ${code}`);
       console.log(`Signal: ${signal}`);
@@ -38,6 +38,7 @@ const ffmpeg = (path, params, output) => {
   console.log(command);
   return new Promise((resolve, reject) => {
     let ps = exec(command);
+    pid = ps.pid;
     ps.stdout.pipe(process.stdout);
     ps.stderr.pipe(process.stdout);
     process.on("SIGINT", () => {
