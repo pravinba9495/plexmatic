@@ -25,7 +25,7 @@
       <div class="m-1">
         <button
           color="warn"
-          [disabled]="moviesService.progress"
+          [disabled]="moviesService.progress && false"
           mat-raised-button
           (click)="refreshList()"
         >

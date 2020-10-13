@@ -23,6 +23,7 @@
         <mat-form-field>
           <mat-label>Container</mat-label>
           <mat-select [(ngModel)]="profile.container">
+            <mat-option value="copy">Same as source</mat-option>
             <mat-option value="mkv">MKV</mat-option>
             <mat-option value="mp4">MP4</mat-option>
           </mat-select>
