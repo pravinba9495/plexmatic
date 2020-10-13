@@ -26,7 +26,7 @@ const init = () => {
   db.run(
     `
 		CREATE TABLE IF NOT EXISTS movies
-		 (id INTEGER PRIMARY KEY AUTOINCREMENT, file text, type text, path text, children text)
+		 (id INTEGER PRIMARY KEY AUTOINCREMENT, file text, type text, path text, parentId int)
 		`,
     (error) => {
       if (error) {
@@ -38,7 +38,7 @@ const init = () => {
   db.run(
     `
 		CREATE TABLE IF NOT EXISTS tv
-		(id INTEGER PRIMARY KEY AUTOINCREMENT, file text, type text, path text, children text)
+		(id INTEGER PRIMARY KEY AUTOINCREMENT, file text, type text, path text, parentId int)
 		`,
     (error) => {
       if (error) {
@@ -147,15 +147,6 @@ const profileMapper = (rows) => {
   });
 };
 
-const mediaMapper = (rows) => {
-  return rows.map((row) => {
-    return {
-      ...row,
-      children: JSON.parse(row.children),
-    };
-  });
-};
-
 const saveProfileInDb = (profile) => {
   return new Promise((resolve, reject) => {
     db.run(
@@ -185,24 +176,44 @@ const saveProfileInDb = (profile) => {
   });
 };
 
-const saveMoviesInDb = (movies) => {
+const saveMoviesInDb = (movies, parentId) => {
+  if (!parentId) {
+    parentId = 0;
+  }
+  const insertedIds = [];
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       let stmt = db.prepare(
-        `INSERT INTO movies (file, type, path, children) VALUES (?,?,?,?)`
+        `INSERT INTO movies (file, type, path, parentId) VALUES (?,?,?,?)`
       );
       for (let movie of movies) {
         stmt.run(
           movie.file,
           movie.type,
           movie.path,
-          JSON.stringify(movie.children)
-        );
+          parentId,
+          function (error) {
+            if (error) {
+              reject(error);
+            }
+            console.log(this.lastID);
+            insertedIds.push(this.lastID);
+          }
+        )
       }
-      stmt.finalize((error) => {
+      stmt.finalize(async (error) => {
         if (error) {
           reject(error);
         }
+        await Promise.all(
+          movies.map((movie, index) => {
+            if (movie.children.length > 0) {
+              return saveMoviesInDb(movie.children, insertedIds[index]);
+            } else {
+              return Promise.resolve();
+            }
+          })
+        )
         resolve();
       });
     });
@@ -213,10 +224,10 @@ const saveTvShowsInDb = (tvShows) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       let stmt = db.prepare(
-        `INSERT INTO tv (file, type, path, children) VALUES (?,?,?,?)`
+        `INSERT INTO tv (file, type, path, parentId) VALUES (?,?,?,?)`
       );
       for (let tv of tvShows) {
-        stmt.run(tv.file, tv.type, tv.path, JSON.stringify(tv.children));
+        stmt.run(tv.file, tv.type, tv.path, tv.parentId || 0);
       }
       stmt.finalize((error) => {
         if (error) {
@@ -262,13 +273,13 @@ const getMoviesListFromDb = () => {
   return new Promise((resolve, reject) => {
     db.all(
       `
-			SELECT id, file, type, path, children from movies
+			SELECT id, file, type, path, parentId from movies
 			`,
       (error, rows) => {
         if (error) {
           reject(error);
         }
-        resolve(mediaMapper(rows || []));
+        resolve(rows || []);
       }
     );
   });
@@ -278,13 +289,13 @@ const getTvShowsListFromDb = () => {
   return new Promise((resolve, reject) => {
     db.all(
       `
-			SELECT id, file, type, path, children from tv
+			SELECT id, file, type, path, parentId from tv
 			`,
       (error, rows) => {
         if (error) {
           reject(error);
         }
-        resolve(mediaMapper(rows || []));
+        resolve(rows || []);
       }
     );
   });
