@@ -1,6 +1,5 @@
 const { exec, execSync } = require("child_process");
 const process = require("process");
-const { emit } = require("./socket");
 let pid = 0;
 const kill = () => {
   return new Promise((resolve, reject) => {
@@ -54,10 +53,8 @@ const ffmpeg = (path, params, output) => {
       console.log(`Code: ${code}`);
       console.log(`Signal: ${signal}`);
       if (code === 0) {
-        emit("closed");
         resolve();
       } else {
-        emit("closed");
         reject(
           new Error(`Non zero exit code, Code: ${code}, Signal: ${signal}`)
         );
