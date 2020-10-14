@@ -30,7 +30,7 @@ export class MoviesService {
           reject(error);
         }
       );
-    })
+    });
   }
 
   getNestedFolderStructure(elements: any[], parentId = 0) {
@@ -41,9 +41,10 @@ export class MoviesService {
           ...e,
           children: this.getNestedFolderStructure(elements, e.id),
         };
-      }).sort((a, b) => {
+      })
+      .sort((a, b) => {
         if (a.file > b.file) {
-          return 1
+          return 1;
         } else {
           return -1;
         }
