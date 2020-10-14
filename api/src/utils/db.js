@@ -217,7 +217,7 @@ const saveMoviesInDb = (movies, parentId) => {
   return Promise.all(
     movies.map((movie) => {
       return new Promise((resolve, reject) => {
-        if (tv.type === 'file' && !['.mkv', '.mp4', '.avi', '.ts', '.mts', '.m2ts'].includes(path.extname(movie.path))) {
+        if (movie.type === 'file' && !['.mkv', '.mp4', '.avi', '.ts', '.mts', '.m2ts'].includes(path.extname(movie.path))) {
           resolve();
         } else { 
           pool.query(
