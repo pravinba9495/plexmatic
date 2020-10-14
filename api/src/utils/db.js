@@ -217,22 +217,26 @@ const saveMoviesInDb = (movies, parentId) => {
   return Promise.all(
     movies.map((movie) => {
       return new Promise((resolve, reject) => {
-        pool.query(
-          {
-            sql: `INSERT INTO movies (file, type, path, parentId) VALUES (?,?,?,?)`,
-            timeout: 10000,
-          },
-          [movie.file, movie.type, movie.path, parentId],
-          async (error, results, fields) => {
-            if (error) {
-              reject(error);
+        if (tv.type === 'file' && !['.mkv', '.mp4', '.avi', '.ts', '.mts', '.m2ts'].includes(path.extname(movie.path))) {
+          resolve();
+        } else { 
+          pool.query(
+            {
+              sql: `INSERT INTO movies (file, type, path, parentId) VALUES (?,?,?,?)`,
+              timeout: 10000,
+            },
+            [movie.file, movie.type, movie.path, parentId],
+            async (error, results, fields) => {
+              if (error) {
+                reject(error);
+              }
+              if (movie.children.length > 0) {
+                await saveMoviesInDb(movie.children, results.insertId);
+              }
+              resolve();
             }
-            if (movie.children.length > 0) {
-              await saveMoviesInDb(movie.children, results.insertId);
-            }
-            resolve();
-          }
-        );
+          );
+        }
       });
     })
   );
@@ -245,22 +249,26 @@ const saveTvShowsInDb = (tvShows, parentId) => {
   return Promise.all(
     tvShows.map((tv) => {
       return new Promise((resolve, reject) => {
-        pool.query(
-          {
-            sql: `INSERT INTO tv (file, type, path, parentId) VALUES (?,?,?,?)`,
-            timeout: 10000,
-          },
-          [tv.file, tv.type, tv.path, parentId],
-          async (error, results, fields) => {
-            if (error) {
-              reject(error);
+        if (tv.type === 'file' && !['.mkv', '.mp4', '.avi', '.ts', '.mts', '.m2ts'].includes(path.extname(tv.path))) {
+          resolve();
+        } else {
+          pool.query(
+            {
+              sql: `INSERT INTO tv (file, type, path, parentId) VALUES (?,?,?,?)`,
+              timeout: 10000,
+            },
+            [tv.file, tv.type, tv.path, parentId],
+            async (error, results, fields) => {
+              if (error) {
+                reject(error);
+              }
+              if (tv.children.length > 0) {
+                await saveTvShowsInDb(tv.children, results.insertId);
+              }
+              resolve();
             }
-            if (tv.children.length > 0) {
-              await saveTvShowsInDb(tv.children, results.insertId);
-            }
-            resolve();
-          }
-        );
+          );
+        }
       });
     })
   );
