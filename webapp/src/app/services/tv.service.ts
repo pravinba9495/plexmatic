@@ -17,16 +17,20 @@ export class TvService {
 
   getTvShows() {
     this.progress = true;
-    this.http.get(environment.apiURL + "/tv").subscribe(
-      (response: any) => {
-        this._items = this.getNestedFolderStructure(response.data);
-        this.progress = false;
-      },
-      (error) => {
-        console.error(error);
-        this.progress = false;
-      }
-    );
+    return new Promise((resolve, reject) => {
+      this.http.get(environment.apiURL + "/tv").subscribe(
+        (response: any) => {
+          this._items = this.getNestedFolderStructure(response.data);
+          this.progress = false;
+          resolve();
+        },
+        (error) => {
+          console.error(error);
+          this.progress = false;
+          reject(error);
+        }
+      );
+    })
   }
 
   getNestedFolderStructure(elements: any[], parentId = 0) {
@@ -37,6 +41,12 @@ export class TvService {
           ...e,
           children: this.getNestedFolderStructure(elements, e.id),
         };
+      }).sort((a, b) => {
+        if (a.file > b.file) {
+          return 1
+        } else {
+          return -1;
+        }
       });
   }
 
@@ -44,15 +54,15 @@ export class TvService {
     this.progress = true;
     return new Promise((resolve, reject) => {
       this.http.get(environment.apiURL + "/tv/refresh").subscribe(
-        (response: any) => {
-          this._items = response.data;
+        async (response: any) => {
+          await this.getTvShows();
           this.progress = false;
           resolve();
         },
         (error) => {
           console.error(error);
           this.progress = false;
-          resolve();
+          reject(error);
         }
       );
     });

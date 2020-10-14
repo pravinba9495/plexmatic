@@ -4,7 +4,7 @@
 Organize your Plex Media the way you want.
 
 # Usage
-```bash
+```docker
 docker run -dit \
 --name plexmatic \
 --network bridge \
