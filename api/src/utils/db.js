@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
 let { walk } = require("./walk");
+const path = require('path');
 
 const pool = mysql.createPool({
   waitForConnections: true,
