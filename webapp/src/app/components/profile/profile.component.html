@@ -146,9 +146,11 @@
           <mat-label>Primary language</mat-label>
           <mat-select [(ngModel)]="profile.language.primary">
             <ng-container *ngFor="let code of codes">
-              <mat-option *ngIf="isPresentInWantedLanguages(code.value)" [value]="code.value">{{
-                code.label
-              }}</mat-option>
+              <mat-option
+                *ngIf="isPresentInWantedLanguages(code.value)"
+                [value]="code.value"
+                >{{ code.label }}</mat-option
+              >
             </ng-container>
           </mat-select>
         </mat-form-field>

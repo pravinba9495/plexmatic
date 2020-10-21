@@ -1,59 +1,90 @@
 <div class="p-1 ml-2">
-  <div style="
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-  ">
+  <div
+    style="
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
     <div>
       <mat-checkbox [disabled]="item.started" color="primary">{{
-      item.filename
-    }}</mat-checkbox>
+        item.filename
+      }}</mat-checkbox>
     </div>
-    <div style="
-    width: 25%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-  ">
-
+    <div
+      style="
+        width: 25%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
       <div class="w-50" *ngIf="item.started && item.finished">
-        <span class="font-weight-light small">{{item.status}}</span>
+        <span class="font-weight-light small">{{ item.status }}</span>
       </div>
 
       <div class="progress w-50" *ngIf="item.started && !item.finished">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-          style="width: 100%; background-color: #3f51b5">
+        <div
+          class="progress-bar progress-bar-striped progress-bar-animated"
+          role="progressbar"
+          style="width: 100%; background-color: #3f51b5"
+        >
           In Progress
         </div>
       </div>
 
       <div class="progress w-50" *ngIf="!item.started && !item.finished">
-        <div class="progress-bar" role="progressbar"
-          style="width: 100%; background-color: transparent; color: black;">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          style="width: 100%; background-color: transparent; color: black"
+        >
           Not started
         </div>
       </div>
 
-
       <div>
-        <button *ngIf="item.started && !item.finished" [disabled]="stopInProgress" mat-icon-button
-          matTooltipPosition="left" [matTooltip]="'Stop'" (click)="stop()">
+        <button
+          *ngIf="item.started && !item.finished"
+          [disabled]="stopInProgress"
+          mat-icon-button
+          matTooltipPosition="left"
+          [matTooltip]="'Stop'"
+          (click)="stop()"
+        >
           <mat-icon style="font-size: 25px" inline="true">stop_circle</mat-icon>
         </button>
-        <button *ngIf="item.started && item.finished && item.status === 'Completed'" mat-icon-button
-          matTooltipPosition="left" [matTooltip]="'Finished'">
-          <mat-icon style="font-size: 25px; color: green" inline="true">check</mat-icon>
+        <button
+          *ngIf="item.started && item.finished && item.status === 'Completed'"
+          mat-icon-button
+          matTooltipPosition="left"
+          [matTooltip]="'Finished'"
+        >
+          <mat-icon style="font-size: 25px; color: green" inline="true"
+            >check</mat-icon
+          >
         </button>
-        <button *ngIf="item.started && item.finished && item.status.includes('Error')" mat-icon-button
-          matTooltipPosition="left" [matTooltip]="'Finished'">
-          <mat-icon style="font-size: 25px; color: red" inline="true">error</mat-icon>
+        <button
+          *ngIf="item.started && item.finished && item.status.includes('Error')"
+          mat-icon-button
+          matTooltipPosition="left"
+          [matTooltip]="'Finished'"
+        >
+          <mat-icon style="font-size: 25px; color: red" inline="true"
+            >error</mat-icon
+          >
         </button>
-        <button *ngIf="!item.started" mat-icon-button matTooltipPosition="left" [matTooltip]="'Remove from queue'"
-          (click)="queueService.removeFromQueue(item.filename)">
+        <button
+          *ngIf="!item.started"
+          mat-icon-button
+          matTooltipPosition="left"
+          [matTooltip]="'Remove from queue'"
+          (click)="queueService.removeFromQueue(item.filename)"
+        >
           <mat-icon style="font-size: 25px" inline="true">delete</mat-icon>
         </button>
       </div>

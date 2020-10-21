@@ -19,7 +19,6 @@
           mat-raised-button
         >
           <mat-icon>add_circle_outline</mat-icon>
-          &nbsp; Add to queue
         </button>
       </div>
       <div class="m-1">
@@ -29,8 +28,7 @@
           mat-raised-button
           (click)="refreshList()"
         >
-          <mat-icon>repeat</mat-icon>
-          &nbsp; Refresh
+          <mat-icon>refresh</mat-icon>
         </button>
       </div>
     </div>
@@ -41,7 +39,10 @@
       <span *ngIf="!tvService.items.length">No TV shows found</span>
     </div>
     <div class="m-2 p-4 border bg-white">
-      <app-tv-entry *ngFor="let item of tvService.items" [item]="item"></app-tv-entry>
+      <app-tv-entry
+        *ngFor="let item of tvService.items"
+        [item]="item"
+      ></app-tv-entry>
     </div>
   </div>
 </div>
